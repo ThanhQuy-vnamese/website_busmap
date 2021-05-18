@@ -2,10 +2,10 @@
 require '../../source/class.php';
 $id = $_REQUEST['id'] ?? '';
 $user = new Database();
-include("../../source/ticket.php");
-$p=new Tickets();
+include("../../source/salary.php");
+$d = new Salary();
 include("../../source/login.php");
-$d = new User();
+$p = new User();
 if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESSION['permission'])) {
 	echo "<script>
 	window.location = '../pages/auth_login.php';
@@ -14,7 +14,7 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 	$username = $_SESSION["username"];
 	$password = $_SESSION["password"];
 	$permission = $_SESSION['permission'];
-	$d->confirm($username, $password, $permission);
+	$p->confirm($username, $password, $permission);
 }
 ?>
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 	<meta name="author" content="">
 	<link rel="icon" href="../../images/favicon.ico">
 
-	<title>VoiceX Admin - Dashboard User list </title>
+	<title>VoiceX Admin - Dashboard User list</title>
 
 	<!-- Bootstrap 4.0-->
 	<link rel="stylesheet" href="../../assets/vendor_components/bootstrap/dist/css/bootstrap.min.css">
@@ -156,69 +156,69 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 
 				<!-- Left side column. contains the logo and sidebar -->
 				<aside class="main-sidebar">
-			<!-- sidebar-->
-			<aside class="main-sidebar">
-			<!-- sidebar-->
-			<section class="sidebar">
-			  <!-- sidebar menu-->
-			  <ul class="sidebar-menu" data-widget="tree">
+					<!-- sidebar-->
+					<aside class="main-sidebar">
+						<!-- sidebar-->
+						<section class="sidebar">
+							<!-- sidebar menu-->
+							<ul class="sidebar-menu" data-widget="tree">
 
-				<li class="header nav-small-cap">APPS</li>
-				<li class="treeview">
-				  <a href="#">
-					<i class="ti-user"></i>
-					<span>Contact</span>
-					<span class="pull-right-container">
-					  <i class="fa fa-angle-right pull-right"></i>
-					</span>
-				  </a>
-				  <ul class="treeview-menu">
-					<li><a href="contact_app_chat.php"><i class="ti-more"></i>Chat app</a></li>
-					<li><a href="contact_userlist.php"><i class="ti-more"></i>Userlist</a></li>
-				  </ul>
-				</li>
+								<li class="header nav-small-cap">APPS</li>
+								<li class="treeview">
+									<a href="#">
+										<i class="ti-user"></i>
+										<span>Contact</span>
+										<span class="pull-right-container">
+											<i class="fa fa-angle-right pull-right"></i>
+										</span>
+									</a>
+									<ul class="treeview-menu">
+										<li><a href="contact_app_chat.php"><i class="ti-more"></i>Chat app</a></li>
+										<li><a href="contact_userlist.php"><i class="ti-more"></i>Userlist</a></li>
+									</ul>
+								</li>
 
-				<li class="treeview">
-				  <a href="#">
-					<i class="ti-layout-grid2"></i>
-					<span>Extra</span>
-					<span class="pull-right-container">
-					  <i class="fa fa-angle-right pull-right"></i>
-					</span>
-				  </a>
-				  <ul class="treeview-menu">
-					<li><a href="extra_app_ticket.php"><i class="ti-more"></i>Support Ticket</a></li>
-					<li><a href="extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
-					<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
-					<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
-				  </ul>
-				</li>
+								<li class="treeview">
+									<a href="#">
+										<i class="ti-layout-grid2"></i>
+										<span>Extra</span>
+										<span class="pull-right-container">
+											<i class="fa fa-angle-right pull-right"></i>
+										</span>
+									</a>
+									<ul class="treeview-menu">
+										<li><a href="extra_app_ticket.php"><i class="ti-more"></i>Support Ticket</a></li>
+										<li><a href="extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
+										<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
+										<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
+									</ul>
+								</li>
 
-				
-				<li class="header nav-small-cap">EXTRA COMPONENTS</li>
-				<li class="treeview">
-				  <a href="#">
-					<i class="ti-map-alt"></i>
-					<span>Map</span>
-					<span class="pull-right-container">
-					  <i class="fa fa-angle-right pull-right"></i>
-					</span>
-				  </a>
-				  <ul class="treeview-menu">
-					<li><a href="map_google.php"><i class="ti-more"></i>Google Map</a></li>
-				  </ul>
-				</li>
-				
-				<li>
-				  <a href="../pages/auth_login.php">
-					<i class="ti-power-off"></i>
-					<span>Log Out</span>
-				  </a>
-				</li> 
 
-			  </ul>
-			</section>
-		</aside>
+								<li class="header nav-small-cap">EXTRA COMPONENTS</li>
+								<li class="treeview">
+									<a href="#">
+										<i class="ti-map-alt"></i>
+										<span>Map</span>
+										<span class="pull-right-container">
+											<i class="fa fa-angle-right pull-right"></i>
+										</span>
+									</a>
+									<ul class="treeview-menu">
+										<li><a href="map_google.php"><i class="ti-more"></i>Google Map</a></li>
+									</ul>
+								</li>
+
+								<li>
+									<a href="../pages/auth_login.php">
+										<i class="ti-power-off"></i>
+										<span>Log Out</span>
+									</a>
+								</li>
+
+							</ul>
+						</section>
+					</aside>
 				</aside>
 				<!-- Main content -->
 				<section class="content">
@@ -226,13 +226,13 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 					<div class="content-header">
 						<div class="d-flex align-items-center">
 							<div class="mr-auto">
-								<h3 class="page-title">Tickets</h3>
+								<h3 class="page-title">Profile</h3>
 								<div class="d-inline-block align-items-center">
 									<nav>
 										<ol class="breadcrumb">
 											<li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
 											<li class="breadcrumb-item" aria-current="page">Extra</li>
-											<li class="breadcrumb-item active" aria-current="page">Tickets</li>
+											<li class="breadcrumb-item active" aria-current="page">Salary</li>
 										</ol>
 									</nav>
 								</div>
@@ -245,54 +245,46 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 
 					<div class="row">
 
-						<div class="col-12 col-lg-12 col-xl-12" style="background-color: #f6f6f6;">
+						<div class="col-12 col-lg-12 col-xl-12" style="background-color:gainsboro;">
 							<div class="pro-pagination-style text-center mt-30">
-								<h2 class="text-center">Tickets Type Add</h2>
+								<h2 class="text-center">Employee Salary</h2>
 								<div class="box-body">
-
 									
 									<form action="" method="post">
-
 										<div class="form-group row">
-											<label class="col-form-label col-md-1">Giá</label>
-											<div class="col-md-10">
-												<input type="text" name="price" id="price" class="form-control" placeholder="7000">
+
+											<div class="col-md-2">
+												<input type="date" name="date" id="date">
+												
 											</div>
-										</div>
-										<div class="form-group row">
-											<label class="col-form-label col-md-1">Giảm giá</label>
-											<div class="col-md-10">
-												<input type="text" name="promotion_price" id="promotion_price" class="form-control" placeholder="3000">
+											<div class="col-md-3">
+											<select name="user" id="user" class="custom-select">
+													<option value="">Chọn Nhân Viên</option>
+													<?php
+													$d->user_list();
+													?>
+													
+												</select>
 											</div>
-										</div>
-
-										<div class="form-group row">
-											<label class="col-form-label col-md-1">Loại vé</label>
-											<div class="col-md-10">
-												<input type="text" name="type" id="type" class="form-control" placeholder="Vé Thường">
+											<div class="col-md-1">
+												<button type="submit" class="btn btn-primary " name="btn-add">Xem</button>
 											</div>
-
+											<div class="col-md-4">
+											</div>
+											<div class="col-md-2">
+												<button type="submit" class="btn btn-danger " name="btn-print">in danh sách</button>
+											</div>
+											
 										</div>
-
-
-										<div class="form-group row">
-											<label class="col-form-label col-md-1">Thêm</label>
-											<button type="submit" class="btn btn-primary mb-5" name="btn-add">Thêm vé</button>
-										</div>
-										<div class="form-group row">
-											<label class="col-form-label col-md-1">Danh sách vé</label>
-											<a href="extra_app_ticket.php" class="btn btn-success mt-20 d-block text-center"> +Danh sách vé</a>
-										</div>
+										
 										<?php
 										if (isset($_REQUEST['btn-add'])) {
-											$price = $_REQUEST['price'];
-											$promotion_price = $_REQUEST['promotion_price'];
-											$type = $_REQUEST['type'];
-											if ($price != '' && $promotion_price != '' && $type !== '') {
-												$p->addnewTickets($price, $promotion_price,$type);
-											} else {
-												echo "<script>alert('Vui lòng nhập đầy đủ thông tin!');</script>";
-											}
+											$date = $_REQUEST['date'];
+											$id_user = $_REQUEST['user'];
+											//if($date!='' || $id_user !=''){
+											$d->Salary_list($date, $id_user);
+											//}
+											//else echo'Vui lòng chọn thông tin để xem chi tiết lương.';
 										}
 										?>
 

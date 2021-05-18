@@ -188,6 +188,8 @@ else{
 				  <ul class="treeview-menu">
 					<li><a href="extra_app_ticket.php"><i class="ti-more"></i>Support Ticket</a></li>
 					<li><a href="extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
+					<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
+					<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
 					
 				  </ul>
 				</li>
@@ -239,19 +241,7 @@ else{
                             </nav>
                         </div>
                     </div>
-                    <div class="right-title">
-                        <div class="dropdown">
-                            <button class="btn btn-outline dropdown-toggle no-caret" type="button" data-toggle="dropdown"><i class="mdi mdi-dots-horizontal"></i></button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                              <a class="dropdown-item" href="#"><i class="mdi mdi-share"></i>Activity</a>
-                              <a class="dropdown-item" href="#"><i class="mdi mdi-email"></i>Messages</a>
-                              <a class="dropdown-item" href="#"><i class="mdi mdi-help-circle-outline"></i>FAQ</a>
-                              <a class="dropdown-item" href="#"><i class="mdi mdi-settings"></i>Support</a>
-                              <div class="dropdown-divider"></div>
-                              <button type="button" class="btn btn-rounded btn-success">Submit</button>
-                            </div>
-                          </div>
-                    </div>
+                    
                 </div>
             </div>
 
@@ -280,7 +270,7 @@ else{
 								</thead>
 								<tbody>
 									<?php
-										$p->Ticket_detail();
+										$p->Ticket_detail($id);
 									?>
 								</tbody>
 							</table>

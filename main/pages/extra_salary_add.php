@@ -188,6 +188,8 @@ else{
 				  <ul class="treeview-menu">
 					<li><a href="extra_app_ticket.php"><i class="ti-more"></i>Support Ticket</a></li>
 					<li><a href="extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
+					<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
+					<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
 				  </ul>
 				</li>
 
@@ -312,7 +314,10 @@ else{
                     <div class="form-group row">
                         <label class="col-form-label col-md-1">Thêm</label>
 							<button type="submit" class="btn btn-primary mb-5" name="btn-add">Thêm</button>
+							<label class="col-form-label col-md-3">Xem Lương Chi Tiết</label>
+							<a href="extra_salary.php?id=<?=$userDetail['id']?>" class="btn btn-success mt-10 d-block text-center"> Xem</a>
                     </div>
+
 					<div class="form-group row">
 					<a href="contact_userlist.php"  class="btn btn-success mt-10 d-block text-center">User List</a>
 					</div>

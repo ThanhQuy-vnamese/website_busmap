@@ -3,10 +3,11 @@ require '../source/class.php';
 $id = $_REQUEST['id'] ?? '';
 $d = new Database();
 require '../source/salary.php';
-
 $e = new Salary();
 include("../source/login.php");
 $p = new User();
+include("../source/order.php");
+$e = new Order();
 if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESSION['permission'])) {
 	echo "<script>
 	window.location = '../main/pages/auth_login.php';
@@ -195,6 +196,8 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 								<ul class="treeview-menu">
 									<li><a href="pages/extra_app_ticket.php"><i class="ti-more"></i>Support Ticket</a></li>
 									<li><a href="pages/extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
+									<li><a href="pages/extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
+									<li><a href="pages/extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
 								</ul>
 							</li>
 
@@ -293,7 +296,7 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 													<th>Tình trạng</th>
 												</tr>
 												<?php
-												$d->Order_list();
+												$e->Order_list();
 												?>
 											</tbody>
 										</table>

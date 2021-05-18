@@ -188,6 +188,8 @@ else{
 				  <ul class="treeview-menu">
 					<li><a href="extra_app_ticket.php"><i class="ti-more"></i>Support Ticket</a></li>
 					<li><a href="extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
+					<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
+					<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
 				  </ul>
 				</li>
 
@@ -282,36 +284,46 @@ else{
 					<div class="form-group row">
 						<label class="col-form-label col-md-1">Khấu Trừ</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="vat" value="<?=$salaryDetail['vat']?>" >
+                            <input type="text" class="form-control" name="vat" value="<?=number_format($salaryDetail['vat'])?>" >
                         </div>
 					
 						<label class="col-form-label col-md-1">Lương cứng/ giờ</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="payment" value="<?=$salaryDetail['payment']?>">
+                            <input type="text" class="form-control" name="payment" value="<?=number_format($salaryDetail['payment'])?>">
                         </div>
                     </div>
                     <div class="form-group row">
 						<label class="col-form-label col-md-1">Số ngày làm việc/ tháng</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="number_day_work" value="<?=$salaryDetail['number_day_work']?>" >
+                            <input type="text" class="form-control" name="number_day_work" value="<?=number_format($salaryDetail['number_day_work'])?>" >
                         </div>
 					
 						<label class="col-form-label col-md-1">Số giờ làm việc/ ngày</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="number_hour_work" value="<?=$salaryDetail['number_hour_work']?>" >
+                            <input type="text" class="form-control" name="number_hour_work" value="<?=number_format($salaryDetail['number_hour_work'])?>" >
                         </div>
 					</div>
 					<div class="form-group row">
 						<label class="col-form-label col-md-1">Tiền trợ cấp</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="allowances" value="<?=$salaryDetail['allowances']?>" >
+                            <input type="text" class="form-control" name="allowances" value="<?=number_format($salaryDetail['allowances'])?>" >
                         </div>
 					
 						<label class="col-form-label col-md-1">Tiền thưởng</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="bonus" value="<?=$salaryDetail['bonus']?>" >
+                            <input type="text" class="form-control" name="bonus" value="<?=number_format($salaryDetail['bonus'])?>" >
                         </div>
                     </div>
+					<div class="form-group row">
+						<label class="col-form-label col-md-1">Tổng Lương</label>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" name="total" value="<?=number_format($salaryDetail['total_salary'])?>" disabled >
+                        </div>
+					
+                        <div class="col-md-5">
+                        </div>
+                    </div>
+					
                     <div class="form-group row">
                         <label class="col-form-label col-md-1">Chỉnh Sửa</label>
 							<button type="submit" class="btn btn-primary mb-5" name="btn-update">Chỉnh Sửa</button>

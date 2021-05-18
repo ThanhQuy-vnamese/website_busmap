@@ -189,7 +189,8 @@ else{
 				  <ul class="treeview-menu">
 					<li><a href="extra_app_ticket.php"><i class="ti-more"></i>Support Ticket</a></li>
 					<li><a href="extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
-					
+					<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
+					<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
 				  </ul>
 				</li>
  					

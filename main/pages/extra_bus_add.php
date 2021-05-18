@@ -2,8 +2,8 @@
 require '../../source/class.php';
 $id = $_REQUEST['id'] ?? '';
 $user = new Database();
-include("../../source/ticket.php");
-$p=new Tickets();
+include("../../source/bus.php");
+$p=new Bus();
 include("../../source/login.php");
 $d = new User();
 if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESSION['permission'])) {
@@ -247,49 +247,47 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 
 						<div class="col-12 col-lg-12 col-xl-12" style="background-color: #f6f6f6;">
 							<div class="pro-pagination-style text-center mt-30">
-								<h2 class="text-center">Tickets Type Add</h2>
+								<h2 class="text-center">Bus</h2>
 								<div class="box-body">
 
-									
-									<form action="" method="post">
+									<div class="row">
+									<div class="col-md-6" style="background-color:cornsilk">
+									<h4 class="text-center">Thêm xe</h4>
+									<form action="" method="post" >
 
 										<div class="form-group row">
-											<label class="col-form-label col-md-1">Giá</label>
+											<label class="col-form-label col-md-1">Biển số xe</label>
 											<div class="col-md-10">
-												<input type="text" name="price" id="price" class="form-control" placeholder="7000">
-											</div>
-										</div>
-										<div class="form-group row">
-											<label class="col-form-label col-md-1">Giảm giá</label>
-											<div class="col-md-10">
-												<input type="text" name="promotion_price" id="promotion_price" class="form-control" placeholder="3000">
+												<input type="text" name="plate" id="plate" class="form-control" placeholder="12345">
 											</div>
 										</div>
 
 										<div class="form-group row">
-											<label class="col-form-label col-md-1">Loại vé</label>
+											<label class="col-form-label col-md-1">Tuyến xe</label>
 											<div class="col-md-10">
-												<input type="text" name="type" id="type" class="form-control" placeholder="Vé Thường">
+											<select name="id_buses_numbers" id="id_buses_numbers" class="form-control">
+												<option value="" disabled>Chọn tuyến</option>
+												<?php
+													$p->bus_number_list();
+												?>
+											</select>
 											</div>
 
 										</div>
 
 
 										<div class="form-group row">
-											<label class="col-form-label col-md-1">Thêm</label>
-											<button type="submit" class="btn btn-primary mb-5" name="btn-add">Thêm vé</button>
+											<label class="col-form-label col-md-2">Thêm</label>
+											<button type="submit" class="btn btn-primary mb-10" name="btn-add">Thêm xe</button>
 										</div>
-										<div class="form-group row">
-											<label class="col-form-label col-md-1">Danh sách vé</label>
-											<a href="extra_app_ticket.php" class="btn btn-success mt-20 d-block text-center"> +Danh sách vé</a>
-										</div>
+										
 										<?php
 										if (isset($_REQUEST['btn-add'])) {
-											$price = $_REQUEST['price'];
-											$promotion_price = $_REQUEST['promotion_price'];
-											$type = $_REQUEST['type'];
-											if ($price != '' && $promotion_price != '' && $type !== '') {
-												$p->addnewTickets($price, $promotion_price,$type);
+											$id_buses_numbers = $_REQUEST['id_buses_numbers'];
+											$plate = $_REQUEST['plate'];
+											
+											if ($plate != '' && $id_buses_numbers != '') {
+												$p-> addnewbus($id_buses_numbers,$plate);;
 											} else {
 												echo "<script>alert('Vui lòng nhập đầy đủ thông tin!');</script>";
 											}
@@ -297,8 +295,50 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 										?>
 
 									</form>
+									</div>
+									<div class="col-md-6">
+									<form action="" method="post">
+									<h4 class="text-center">Thêm tuyến</h4>
+
+										<div class="form-group row">
+											<label class="col-form-label col-md-1">Tên Tuyến</label>
+											<div class="col-md-10">
+												<input type="text" name="bus_number_name" id="bus_number_name" class="form-control" placeholder="Bến Xe Miền Đông - Ngã Tư Lê Quang Định ">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-1">Số Tuyến</label>
+											<div class="col-md-10">
+												<input type="text" name="bus_numbers" id="bus_numbers" class="form-control" placeholder="18">
+											</div>
+										</div>
+
+
+										<div class="form-group row">
+											<label class="col-form-label col-md-2">Thêm</label>
+											<button type="submit" class="btn btn-info mb-5" name="btn-add-2">Thêm tuyến</button>
+										</div>
+										
+										<?php
+										if (isset($_REQUEST['btn-add-2'])) {
+											$bus_number_name = $_REQUEST['bus_number_name'];
+											$bus_number = $_REQUEST['bus_number'];
+											if ($bus_number_name != '' && $bus_number != '' ) {
+												$p-> addnewbusnumber($bus_number_name, $bus_number);
+											} else {
+												echo "<script>alert('Vui lòng nhập đầy đủ thông tin!');</script>";
+											}
+										}
+										?>
+
+									</form>
+									</div>
 								</div>
 							</div>
+							<div class="form-group row">
+											<label class="col-form-label col-md-1">Danh sách xe</label>
+											<a href="extra_bus_list.php" class="btn btn-success mt-20 d-block text-center"> +Danh sách xe</a>
+										</div>
 							<!-- /.nav-tabs-custom -->
 						</div>
 

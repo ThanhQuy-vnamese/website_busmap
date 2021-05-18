@@ -3,17 +3,11 @@ require_once("class.php");
 class Tickets extends Database{
     function Ticket_list(){
         $connect = $this->connect_database();
-        $sql="select * from Tickets";
+        $sql="select * from type_of_tickets right join tickets on tickets.id_type_of_tickets= type_of_tickets.id";
         $result2 = mysqli_query($connect, $sql);
         while ($row = mysqli_fetch_array($result2)) {
             if($row['id']==0){
                 echo'Không có Vé nào';
-            }
-            if($row['type_of_tickets']==0){
-                $type='<span class="badge badge-success">Vé Thường</span>';
-            }
-            if($row['type_of_tickets']==1){
-                $type='<span class="badge badge-primary">Vé Tháng</span>';
             }
             if($row['id_user']==''){
                 $tt='<span class="badge badge-warning">New</span>';
@@ -21,12 +15,13 @@ class Tickets extends Database{
             elseif($row['id_user']!=''){
                 $tt='<span class="badge badge-danger">Saled</span>';
             }
+            $id=$row['id'];
             echo'<tr>
             <td><a href="extra_app_ticket_detail.php?id='.$row['id'].'">'.$row['id'].'</td>
             <td>'.$row['price'].'</td>
-            <td>'.$row['promotion_price'].'</td>
+            <td>'.$row['subtract_price'].'</td>
             <td>'.$tt.'</td>
-            <td>'.$type.'</td>
+            <td><span class="badge badge-success">'.$row['type'].'</span></td>
             <td>
                 <a href="javascript:void(0)" class="text-danger" data-toggle="tooltip" data-original-title="Delete"><i class="ti-trash" aria-hidden="true"></i></a>
             </td>
@@ -35,44 +30,50 @@ class Tickets extends Database{
         
 
     }
-    function Ticket_detail(){
+    function Ticket_detail($id){
+        
         $connect = $this->connect_database();
-        $query = "select*from Tickets inner join Orders on orders.id_ticket= tickets.id inner join users on users.id=orders.id_user inner join user_details on users.id=user_details.id_user ";
+        $query = "select*from Tickets inner join Orders on orders.id_ticket= tickets.id 
+        inner join users on users.id=orders.id_user 
+        inner join user_details on users.id=user_details.id_user
+        inner join type_of_tickets on tickets.id_type_of_tickets= type_of_tickets.id 
+        where tickets.id={$id}";
+        //var_dump($query);die;
         $result = mysqli_query($connect, $query);
         while ($row = mysqli_fetch_array($result)) {
-            if($row['permission']== 1 && $row['type_of_tickets']== 0 ){
-                $row['promotion_price']='0';
+            if($row['permission']== 1 && $row['type']== 'vé thường' ){
+                $row['subtract_price']='0';
                 $total=$row['price']*$row['quantity'];
             }
-            elseif($row["permission"] == 2 && $row['type_of_tickets']== 0) {
-                $row['promotion_price']='0';
+            elseif($row["permission"] == 2 && $row['type']== 'vé thường') {
+                $row['subtract_price']='0';
                 $total=$row['price']*$row['quantity'];
-            }elseif($row['permission']== 3 && $row['type_of_tickets']== 0){
-                $row['promotion_price']='0';
-                $total=$row['price']*$row['quantity'];
-            }
-            elseif($row['permission']== 4 && $row['type_of_tickets']== 0){
-                $row['promotion_price']='0';
+            }elseif($row['permission']== 3 && $row['type']== 'vé thường'){
+                $row['subtract_price']='0';
                 $total=$row['price']*$row['quantity'];
             }
-            elseif($row['permission']== 5 && $row['type_of_tickets']== 0){
-                $row['promotion_price']='0';
+            elseif($row['permission']== 4 && $row['type']== 'vé thường'){
+                $row['subtract_price']='0';
                 $total=$row['price']*$row['quantity'];
             }
-            elseif($row['permission']== 6 && $row['type_of_tickets']== 0){
+            elseif($row['permission']== 5 && $row['type']== 'vé thường'){
+                $row['subtract_price']='0';
+                $total=$row['price']*$row['quantity'];
+            }
+            elseif($row['permission']== 6 && $row['type']== 'vé thường'){
                 
-                $row['promotion_price']='3000';
-                $total=$row['promotion_price']*$row['quantity'];
+                $row['subtract_price']='3000';
+                $total=$row['subtract_price']*$row['quantity'];
             }
-            elseif($row['permission']== 6 && $row['type_of_tickets']==1){
+            elseif($row['permission']== 6 && $row['type']=='vé tháng'){
                 
-                $row['promotion_price']='90000';
-                $total=$row['promotion_price'];
+                $row['subtract_price']='90000';
+                $total=$row['subtract_price'];
             }
             elseif($row['permission']== 1 || $row['permission']== 2 ||
-            $row['permission']== 3 || $row['permission']== 4 || $row['permission']== 5 && $row['type_of_tickets']==1){
+            $row['permission']== 3 || $row['permission']== 4 || $row['permission']== 5 && $row['type']=='vé tháng'){
                 
-                $row['promotion_price']='0';
+                $row['subtract_price']='0';
                 $total=$row['price'];
             }
             if($row['status']==0){
@@ -96,9 +97,9 @@ class Tickets extends Database{
                 <td>'.$row['email'].'</td>
                 <td>'.$row['quantity'].'</td>
                 <td>'.$row['price'].'</td>
-                <td>'.$row['promotion_price'].'</td>
+                <td>'.$row['subtract_price'].'</td>
                 <td>'.$row['date_order'].'</td>
-                <td>'.$status.'</td>
+                <td><span class="badge badge-pill badge-danger">'.$status.'</span></td>
                 <td>
                     <a href="javascript:void(0)" class="text-danger" data-toggle="tooltip" data-original-title="Delete"><i class="ti-trash" aria-hidden="true"></i></a>
                 </td>
@@ -117,34 +118,34 @@ class Tickets extends Database{
             <div class="font-size-24">'.$total.'</div>
         ';
     }
-    function get_saledtickets()
+    function get_usual_tickets()
     {
         $connect = $this->connect_database();
-        $result = mysqli_query($connect, "select count(Tickets.id) as total from Tickets inner join Orders on orders.id_ticket= tickets.id");
+        $result = mysqli_query($connect, "select count(Tickets.id) as total from Tickets inner join type_of_tickets on tickets.id_type_of_tickets= type_of_tickets.id 
+        where type_of_tickets.id= '1'");
         $row = mysqli_fetch_assoc($result);
         $total = $row['total'];
             echo '
             <div class="font-size-24">'.$total.'</div>
         ';
     }
-    function get_newtickets()
+    function get_monthly_tickets()
     {
         $connect = $this->connect_database();
-        $result1 = mysqli_query($connect, "select count(Tickets.id) as total1 from Tickets inner join Orders on orders.id_ticket= tickets.id");
+        $result1 = mysqli_query($connect, "select count(Tickets.id) as total1 from Tickets 
+        inner join type_of_tickets on tickets.id_type_of_tickets= type_of_tickets.id 
+        where type_of_tickets.id= '2'");
         $row = mysqli_fetch_assoc($result1);
         $total1 = $row['total1'];
-        $result2 = mysqli_query($connect, "select count(Tickets.id) as total2 from Tickets");
-        $row = mysqli_fetch_assoc($result2);
-        $total2 = $row['total2'];
-        $total=$total2 - $total1;
             echo '
-            <div class="font-size-24">'.$total.'</div>
+            <div class="font-size-24">'.$total1.'</div>
         ';
     }
     function addnewTickets($price, $promotion_price,$type){
         $connect = $this->connect_database();
-        $sql="INSERT INTO `tickets`(`id`, `price`, `promotion_price`, `id_user`, `type_of_tickets`) 
-        VALUES ('',$price,$promotion_price,'',$type)";
+        $sql="INSERT INTO `type_of_tickets`(`id`, `type`, `price`, `promotion_price`)
+         VALUES ('','$type','$price','$promotion_price')";
+        //var_dump($sql);die;
         $result=mysqli_query($connect,$sql);
         if($result){
             echo"<script>alert('Tickets created');</script>";

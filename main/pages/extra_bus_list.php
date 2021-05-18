@@ -2,8 +2,8 @@
 require '../../source/class.php';
 $id = $_REQUEST['id'] ?? '';
 $user = new Database();
-include("../../source/ticket.php");
-$p=new Tickets();
+include("../../source/bus.php");
+$p=new Bus();
 include("../../source/login.php");
 $d=new User();
 if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
@@ -226,13 +226,13 @@ else{
             <div class="content-header">
                 <div class="d-flex align-items-center">
                     <div class="mr-auto">
-                        <h3 class="page-title">Tickets</h3>
+                        <h3 class="page-title">BUS</h3>
                         <div class="d-inline-block align-items-center">
                             <nav>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
                                     <li class="breadcrumb-item" aria-current="page">Extra</li>
-                                    <li class="breadcrumb-item active" aria-current="page">Tickets</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Bus</li>
                                 </ol>
                             </nav>
                         </div>
@@ -247,8 +247,7 @@ else{
 			  <div class="col-xl-9 col-lg-8 col-12">
 				<div class="box">
 					<div class="box-header with-border">						
-						<h4 class="box-title">Support Ticket List</h4>
-						<h6 class="box-subtitle">danh sách vé đã bán</h6>
+						<h4 class="box-title">Support Bus List</h4>
 					</div>
 					<div class="box-body p-15">						
 						<div class="table-responsive">
@@ -256,16 +255,15 @@ else{
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>Đơn giá</th>
-										<th>Giảm Gía</th>
-										<th>Tình trạng vé</th>
-										<th>Loại vé</th>
+										<th>Biển Số Xe</th>
+										<th>Tuyến xe</th>
+										<th>Tên Tuyến</th>
 										<th>Xóa</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
-										$p->Ticket_list();
+										$p->Bus_list();
 									?>
 								</tbody>
 							</table>
@@ -278,8 +276,8 @@ else{
 				<div class="col-12">
 				  <a class="box box-link-shadow text-center" href="javascript:void(0)">
 					<div class="box-body">
-						<?php $p->get_alltickets();?>
-						<span>Total Tickets</span>
+						<?php $p->get_all_bus_numbers();?>
+						<span>Tổng số tuyến xe</span>
 					</div>
 					<div class="box-body bg-info">
 						<p>
@@ -291,8 +289,8 @@ else{
 				<div class="col-12">
 				  <a class="box box-link-shadow text-center" href="javascript:void(0)">
 					<div class="box-body">
-					<?php $p->get_monthly_tickets();?>
-						<span>Vé Tháng</span>
+					<?php $p->get_allBus();?>
+						<span>Tổng số xe</span>
 					</div>
 					<div class="box-body bg-warning">
 						<p>
@@ -302,24 +300,12 @@ else{
 				  </a>
 				</div>	
 				
+				
 				<div class="col-12">
-				  <a class="box box-link-shadow text-center" href="javascript:void(0)">
-					<div class="box-body">
-					<?php $p->get_usual_tickets();?>
-						<span>Vé thường</span>
-					</div>
-					<div class="box-body bg-success">
-						<p>
-							<span class="mdi mdi-ticket font-size-30"></span>
-						</p>
-					</div>
-				  </a>
-				</div>
-				<div class="col-12">
-				  <a class="box box-link-shadow text-center" href="../pages/extra_app_ticket_add.php">
+				  <a class="box box-link-shadow text-center" href="../pages/extra_bus_add.php">
 					<div class="box-body">
 					
-						<span>Add new</span>
+						<span>Thêm xe mới </span>
 					</div>
 					<div class="box-body bg-primary">
 						<p>
