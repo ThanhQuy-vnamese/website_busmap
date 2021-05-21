@@ -3,9 +3,9 @@ require '../../source/class.php';
 $id = $_REQUEST['id'] ?? '';
 $user = new Database();
 include("../../source/bus.php");
-$p=new Bus();
+$d=new Bus();
 include("../../source/login.php");
-$d=new User();
+$p=new User();
 if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
 	echo "<script>
 	window.location = '../pages/auth_login.php';
@@ -15,7 +15,7 @@ else{
 	$username=$_SESSION["username"];
 	$password=$_SESSION["password"];
 	$permission = $_SESSION['permission'];
-	$d->confirm($username,$password, $permission);
+	$p->confirm($username,$password, $permission);
 }
 ?>
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ else{
     <meta name="author" content="">
     <link rel="icon" href="../../images/favicon.ico">
 
-    <title>VoiceX Admin - Dashboard  User list </title>
+    <title>VoiceX Admin - Dashboard  User list</title>
   
 	<!-- Bootstrap 4.0-->
 	<link rel="stylesheet" href="../../assets/vendor_components/bootstrap/dist/css/bootstrap.min.css">
@@ -127,7 +127,7 @@ else{
               <!-- User image -->
               <li class="user-header bg-img" style="background-image: url(../../images/user-info.jpg)" data-overlay="3">
 				  <div class="flexbox align-self-center">					  
-				  	<img src="../../images/avatar/7.jpg" class="float-left rounded-circle" alt="User Image">					  
+				  	<img src="../images/avatar/7.jpg" class="float-left rounded-circle" alt="User Image">					  
 					<h4 class="user-name align-self-center">
 					  <span><?= isset($_SESSION['fullname']) ? $_SESSION['fullname'] : ''  ?></span>
 					  <small><?= isset($_SESSION['email']) ? $_SESSION['email'] : ''  ?></small>
@@ -191,7 +191,7 @@ else{
 					<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
 					<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
 					<li><a href="extra_revenue_list.php"><i class="ti-more"></i>Revenue</a></li>
-
+					
 				  </ul>
 				</li>
 
@@ -220,105 +220,90 @@ else{
 			  </ul>
 			</section>
 		</aside>
-		</aside>  
-
+		</aside>   
 		<!-- Main content -->
 		<section class="content">
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="d-flex align-items-center">
                     <div class="mr-auto">
-                        <h3 class="page-title">BUS</h3>
+                        <h3 class="page-title">Profile</h3>
                         <div class="d-inline-block align-items-center">
                             <nav>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
                                     <li class="breadcrumb-item" aria-current="page">Extra</li>
-                                    <li class="breadcrumb-item active" aria-current="page">Bus</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Salary</li>
                                 </ol>
                             </nav>
                         </div>
                     </div>
                     <div class="right-title">
-                        
+                       
                     </div>
                 </div>
             </div>
 
 		    <div class="row">
-			  <div class="col-xl-9 col-lg-8 col-12">
-				<div class="box">
-					<div class="box-header with-border">						
-						<h4 class="box-title">Support Bus List</h4>
-					</div>
-					<div class="box-body p-15">						
-						<div class="table-responsive">
-							<table id="tickets" class="table mt-0 table-hover no-wrap table-borderless" data-page-size="10">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>Biển Số Xe</th>
-										<th>Tuyến xe</th>
-										<th>Tên Tuyến</th>
-										<th>Xóa</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php
-										$p->Bus_list();
-									?>
-								</tbody>
-							</table>
+
+			<div class="col-12 col-lg-12 col-xl-12" style="background-color: #f6f6f6;">
+			<div class="pro-pagination-style text-center mt-30">
+				<h2 class="text-center">Bus Detail</h2>
+            <div class="box-body" >				
+			<form action="" method="post">
+                    <?php
+                    $busDetail = $d->getDetailBus($id);
+                    ?>
+                    <div class="form-group row">
+						
+                        <label class="col-form-label col-md-1">Biển số xe</label>
+                        <div class="col-md-5">
+                            <input type="text" value="<?=$busDetail['plate']?>" name="plate"  class="form-control">
 						</div>
-					</div>
-				</div>
-				
-			  </div>
-			  <div class="col-xl-3 col-lg-4 col-12">
-				<div class="col-12">
-				  <a class="box box-link-shadow text-center" href="javascript:void(0)">
-					<div class="box-body">
-						<?php $p->get_all_bus_numbers();?>
-						<span>Tổng số tuyến xe</span>
-					</div>
-					<div class="box-body bg-info">
-						<p>
-							<span class="mdi mdi-ticket-confirmation font-size-30"></span>
-						</p>
-					</div>
-				  </a>
-				</div>
-				<div class="col-12">
-				  <a class="box box-link-shadow text-center" href="javascript:void(0)">
-					<div class="box-body">
-					<?php $p->get_allBus();?>
-						<span>Tổng số xe</span>
-					</div>
-					<div class="box-body bg-warning">
-						<p>
-							<span class="mdi mdi-ticket font-size-30"></span>
-						</p>
-					</div>
-				  </a>
-				</div>	
-				
-				
-				<div class="col-12">
-				  <a class="box box-link-shadow text-center" href="../pages/extra_bus_add.php">
-					<div class="box-body">
+						<label class="col-form-label col-md-1">Tuyến Xe</label>
+						<div class="col-md-5">
+						<select name="id_buses_numbers" id="id_buses_numbers" class="form-control ">
+												<option value="" disabled>Chọn tuyến</option>
+												<?php
+													$d->bus_number_list();
+												?>
+											</select>
+						</div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-2">Cập nhật</label>
+							<button type="submit" class="btn btn-primary mt-10" name="btn-add">Cập nhật</button>
+							<label class="col-form-label col-md-1"></label>
+							<a href="extra_bus_list.php" class="btn btn-success mt-10 d-block text-center">+Danh sách xe buýt</a>
+                    </div>
+
 					
-						<span>Thêm xe mới </span>
-					</div>
-					<div class="box-body bg-primary">
-						<p>
-							<span class="mdi mdi-ticket font-size-30"></span>
-						</p>
-					</div>
-				  </a>
-				</div>
-											  
-			  </div>
+					<?php
+                    if (isset($_REQUEST['btn-add'])) {
+						
+                        $plate=$_REQUEST['plate'];
+						$bus_number = $_REQUEST['id_buses_numbers'];
+						
+						if($plate!='' && $bus_number!='')
+											{
+												$d->updateBus($bus_number, $plate, $id);
+
+											}
+											else
+											{
+												echo"<script>alert('Vui lòng nhập đầy đủ thông tin!');</script>";
+											}
+                            
+                    }
+					?>
+					
+				</form>
 			</div>
+			</div>
+			  <!-- /.nav-tabs-custom -->
+			</div>
+
 		</section>
 		<!-- /.content -->
 	  </div>
@@ -608,17 +593,11 @@ else{
 	<!-- Bootstrap 4.0-->
 	<script src="../../assets/vendor_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	
-	<!-- This is data table -->
-    <script src="../../assets/vendor_components/datatable/datatables.min.js"></script>
-	
 	<!-- SlimScroll -->
 	<script src="../../assets/vendor_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	
 	<!-- FastClick -->
 	<script src="../../assets/vendor_components/fastclick/lib/fastclick.js"></script>
-	
-	<!-- peity -->
-	<script src="../../assets/vendor_components/jquery.peity/jquery.peity.js"></script>
 	
 	<!-- VoiceX Admin App -->
 	<script src="../js/template.js"></script>
@@ -626,11 +605,8 @@ else{
 	<!-- VoiceX Admin for demo purposes -->
 	<script src="../js/demo.js"></script>
 	
-	<!-- VoiceX Admin for Data Table -->
-	<script src="../js/pages/data-table.js"></script>
-	
-	<!-- demo only -->
-	<script src="../js/pages/app-ticket.js"></script>
+	<!-- demo purposes -->
+	<script src="../js/pages/timeline.js"></script>
 	
 	
 </body>

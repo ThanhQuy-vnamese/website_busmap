@@ -63,13 +63,13 @@ function Order_list(){
                 echo'
                     <tr>
                       <td><a href="pages/extra_order_detail.php?id='.$row['id'].'">Order #bus'.$row['id'].'</a></td>
-                      <td>'.$row['full_name'].'</td>
-                      <td><span class="text-muted"><i class="fa fa-clock-o"></i>'.$row['date_order'].'</span> </td>
-                      <td>'.$row['quantity'].'</td>
-                      <td>'.$row['price'].'</td>
-                      <td>'.$row['subtract_price'].'</td>
-                      <td>'.$total.'</td>
-                      <td><span class="badge badge-pill badge-danger">'.$status.'</span></td>
+                      <td><a href="pages/extra_order_detail.php?id='.$row['id'].'">'.$row['full_name'].'</td>
+                      <td><a href="pages/extra_order_detail.php?id='.$row['id'].'"><span class="text-muted"><i class="fa fa-clock-o"></i>'.$row['date_order'].'</span> </td>
+                      <td><a href="pages/extra_order_detail.php?id='.$row['id'].'">'.$row['quantity'].'</td>
+                      <td><a href="pages/extra_order_detail.php?id='.$row['id'].'">'.$row['price'].'</td>
+                      <td><a href="pages/extra_order_detail.php?id='.$row['id'].'">'.$row['subtract_price'].'</td>
+                      <td><a href="pages/extra_order_detail.php?id='.$row['id'].'">'.$total.'</td>
+                      <td><a href="pages/extra_order_detail.php?id='.$row['id'].'"><span class="badge badge-pill badge-danger">'.$status.'</span></td>
                     </tr>
                   ';
         }

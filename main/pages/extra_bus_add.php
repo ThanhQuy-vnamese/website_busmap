@@ -191,6 +191,7 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 					<li><a href="extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
 					<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
 					<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
+					<li><a href="extra_revenue_list.php"><i class="ti-more"></i>Revenue</a></li>
 				  </ul>
 				</li>
 
@@ -258,7 +259,7 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 										<div class="form-group row">
 											<label class="col-form-label col-md-1">Biển số xe</label>
 											<div class="col-md-10">
-												<input type="text" name="plate" id="plate" class="form-control" placeholder="12345">
+												<input type="text" name="plate" id="plate" class="form-control" placeholder="51B.12345">
 											</div>
 										</div>
 
@@ -322,7 +323,7 @@ if (empty($_SESSION["username"]) || empty($_SESSION["password"]) || empty($_SESS
 										<?php
 										if (isset($_REQUEST['btn-add-2'])) {
 											$bus_number_name = $_REQUEST['bus_number_name'];
-											$bus_number = $_REQUEST['bus_number'];
+											$bus_number = $_REQUEST['bus_numbers'];
 											if ($bus_number_name != '' && $bus_number != '' ) {
 												$p-> addnewbusnumber($bus_number_name, $bus_number);
 											} else {

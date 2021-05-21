@@ -4,17 +4,17 @@ require_once("class.php");
 class Bus extends Database{
     function Bus_list(){
         $connect = $this->connect_database();
-        $sql="select * from buses inner join buses_numbers on buses.id_buses_numbers= buses_numbers.id";
+        $sql="select * from buses_numbers inner join buses on buses.id_buses_numbers= buses_numbers.id";
         $result2 = mysqli_query($connect, $sql);
         while ($row = mysqli_fetch_array($result2)) {
             
             echo'<tr>
             <td><a href="extra_bus_detail.php?id='.$row['id'].'">'.$row['id'].'</td>
-            <td>51B.'.$row['lincense_plate'].'</td>
-            <td>'.$row['bus_numbers'].'</td>
-            <td>'.$row['bus_number_name'].'</td>
+            <td><a href="extra_bus_detail.php?id='.$row['id'].'">'.$row['lincense_plate'].'</td>
+            <td><a href="extra_bus_detail.php?id='.$row['id'].'">'.$row['bus_numbers'].'</td>
+            <td><a href="extra_bus_detail.php?id='.$row['id'].'">'.$row['bus_number_name'].'</td>
             <td>
-                <a href="javascript:void(0)" class="text-danger" data-toggle="tooltip" data-original-title="Delete"><i class="ti-trash" aria-hidden="true"></i></a>
+                <a href="extra_bus_list.php?id='.$row['id'].'" class="text-danger" data-toggle="tooltip" data-original-title="Delete"><i class="ti-trash" aria-hidden="true"></i></a>
             </td>
         </tr>';
         }
@@ -63,6 +63,9 @@ class Bus extends Database{
         }
     }
     function addnewbusnumber($bus_number_name, $bus_number){
+        $mysqli = new mysqli("localhost","$bus_number_name","$bus_number");
+        $bus_number_name= $mysqli -> real_escape_string($bus_number_name);
+        $bus_number= $mysqli -> real_escape_string($bus_number);
         $connect = $this->connect_database();
         $sql="INSERT INTO `buses_numbers`(`id`, `bus_number_name`, `bus_numbers`)
          VALUES ('','$bus_number_name','$bus_number')";
@@ -74,4 +77,48 @@ class Bus extends Database{
             echo"<script>alert('fail');</script>";
         }
     }
+    public function deleteBus( $id) {
+        $connect = $this->connect_database();
+        
+            $query = "
+            SET FOREIGN_KEY_CHECKS=0;delete from buses where id={$id}";
+            if (mysqli_query($connect, $query)) {
+                echo"<script>alert('Success');</script>";
+            }
+            else{
+            echo"<script>alert(' failed');</script>";
+            }
+       
+    }
+    public function updateBus($bus_number, $plate, $id) {
+        $connect = $this->connect_database();
+        
+        $query = "UPDATE buses SET lincense_plate='${plate}', id_buses_numbers='${bus_number}'WHERE id = ${id};";
+        //var_dump($query);die;
+        if (mysqli_query($connect, $query)) {
+            echo"<script>alert('Success');</script>";
+        }
+        else{
+        echo"<script>alert(' failed');</script>";
+        }
+    }
+    public function getDetailBus(string $id): array {
+        $connect = $this->connect_database();
+        $query = "select * from buses_numbers inner join buses on buses.id_buses_numbers= buses_numbers.id where buses.id={$id}";
+        $result = mysqli_query($connect,$query);
+        $num = mysqli_num_rows($result);
+        $data = [];
+        if ($num > 0) {
+            while ($row = mysqli_fetch_array($result)) {
+                $data['plate'] = $row['lincense_plate'];
+                $data['id'] = $row['id'];
+                $data['bus_number_name'] = $row['bus_number_name'];
+                $data['bus_numbers'] = $row['bus_numbers'];
+
+            }
+        }
+
+        return $data;
+    }
+
 }

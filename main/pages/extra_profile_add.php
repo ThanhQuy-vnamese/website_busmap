@@ -188,6 +188,8 @@ else{
 					<li><a href="extra_calendar.php"><i class="ti-more"></i>Calendar</a></li>
 					<li><a href="extra_salary_list.php"><i class="ti-more"></i>Salary</a></li>
 					<li><a href="extra_bus_list.php"><i class="ti-more"></i>Bus</a></li>
+					<li><a href="extra_revenue_list.php"><i class="ti-more"></i>Revenue</a></li>
+
 				  </ul>
 				</li>
 
@@ -207,7 +209,7 @@ else{
 				</li>
 				
 				<li>
-				  <a href="../pages/auth_login.php">
+				  <a href="../pages/auth_logout.php">
 					<i class="ti-power-off"></i>
 					<span>Log Out</span>
 				  </a>

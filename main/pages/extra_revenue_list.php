@@ -2,8 +2,8 @@
 require '../../source/class.php';
 $id = $_REQUEST['id'] ?? '';
 $user = new Database();
-include("../../source/bus.php");
-$p=new Bus();
+include("../../source/revenue.php");
+$p=new Revenue();
 include("../../source/login.php");
 $d=new User();
 if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
@@ -246,77 +246,18 @@ else{
             </div>
 
 		    <div class="row">
-			  <div class="col-xl-9 col-lg-8 col-12">
+			  <div class="col-xl-12 col-lg-12 col-12">
 				<div class="box">
 					<div class="box-header with-border">						
-						<h4 class="box-title">Support Bus List</h4>
+						<h4 class="box-title">Support Revenue List</h4>
 					</div>
 					<div class="box-body p-15">						
-						<div class="table-responsive">
-							<table id="tickets" class="table mt-0 table-hover no-wrap table-borderless" data-page-size="10">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>Biển Số Xe</th>
-										<th>Tuyến xe</th>
-										<th>Tên Tuyến</th>
-										<th>Xóa</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php
-										$p->Bus_list();
-									?>
-								</tbody>
-							</table>
-						</div>
+						<?php
+							$p->Revenue_list();
+						?>
 					</div>
 				</div>
 				
-			  </div>
-			  <div class="col-xl-3 col-lg-4 col-12">
-				<div class="col-12">
-				  <a class="box box-link-shadow text-center" href="javascript:void(0)">
-					<div class="box-body">
-						<?php $p->get_all_bus_numbers();?>
-						<span>Tổng số tuyến xe</span>
-					</div>
-					<div class="box-body bg-info">
-						<p>
-							<span class="mdi mdi-ticket-confirmation font-size-30"></span>
-						</p>
-					</div>
-				  </a>
-				</div>
-				<div class="col-12">
-				  <a class="box box-link-shadow text-center" href="javascript:void(0)">
-					<div class="box-body">
-					<?php $p->get_allBus();?>
-						<span>Tổng số xe</span>
-					</div>
-					<div class="box-body bg-warning">
-						<p>
-							<span class="mdi mdi-ticket font-size-30"></span>
-						</p>
-					</div>
-				  </a>
-				</div>	
-				
-				
-				<div class="col-12">
-				  <a class="box box-link-shadow text-center" href="../pages/extra_bus_add.php">
-					<div class="box-body">
-					
-						<span>Thêm xe mới </span>
-					</div>
-					<div class="box-body bg-primary">
-						<p>
-							<span class="mdi mdi-ticket font-size-30"></span>
-						</p>
-					</div>
-				  </a>
-				</div>
-											  
 			  </div>
 			</div>
 		</section>

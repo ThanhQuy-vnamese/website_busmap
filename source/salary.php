@@ -95,10 +95,11 @@ public function getDetailSalary(string $id): array {
     public function updateSalary($id,$payment,$bonus,$allowances, $number_hour_work, $number_day_work, $vat) {
         $connect = $this->connect_database();
         $idDetail = $this->generateIdTableSalaryDetail($id);
-        $sql1 = "UPDATE salaries SET bonus='${bonus}', allowances='${allowances}', payment='${payment}' WHERE id_user = ${id}
-        ;";
+        $sql1 = "UPDATE salaries SET bonus='${bonus}', allowances='${allowances}', payment='${payment}' WHERE id_user = ${id};";
         $result = mysqli_query($connect, $sql1);
+        //var_dump($result);die;
         while ($row = mysqli_fetch_array($result)) {
+            
         $id_salary=$row['id'];
         $total_salary= ($number_hour_work*$number_day_work*$payment) + $allowances + $bonus- $vat;
     
@@ -120,7 +121,7 @@ public function getDetailSalary(string $id): array {
         
         $idDetail = $this->generateIdTableSalaryDetail($id_user);
         echo'<div class="table-responsive">
-							<table id="tickets" class="table mt-0 table-hover no-wrap table-borderless" data-page-size="10">
+							<table id="salary" class="table mt-0 table-hover no-wrap table-borderless" data-page-size="10">
 								<thead>
 									<tr>
 										<th>ID</th>
@@ -181,17 +182,17 @@ public function getDetailSalary(string $id): array {
             while ($row1 = mysqli_fetch_array($result1)) {
             echo'
                     <tr>
-                      <td><a href="#">Nhân Viên #NV'.$row1['id'].'</a></td>
-                      <td>'.$row1['full_name'].'</td>
-                      <td>'.$row1['email'].'</td>
-                      <td><span class="text-muted"><i class="fa fa-clock-o"></i>'.$row1['created_at'].'</span> </td>
-                      <td>'.$row1['number_hour_work'].'</td>
-                      <td>'.$row1['number_day_work'].'</td>
-                      <td>'.number_format($row1['bonus']).'</td>
-                      <td>'.number_format($row1['allowances']).'</td>
-                      <td>'.number_format($row1['vat']).'</td>
-                      <td>'.number_format($row1['payment']).'</td>
-                      <td>'.number_format($row1['total_salary']).'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">Nhân Viên #NV'.$row1['id'].'</a></td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.$row1['full_name'].'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.$row1['email'].'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'"><span class="text-muted"><i class="fa fa-clock-o"></i>'.$row1['created_at'].'</span> </td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.$row1['number_hour_work'].'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.$row1['number_day_work'].'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.number_format($row1['bonus']).'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.number_format($row1['allowances']).'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.number_format($row1['vat']).'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.number_format($row1['payment']).'</td>
+                      <td><a href="extra_salary.php?id='.$row1['id'].'">'.number_format($row1['total_salary']).'</td>
                     </tr>
                     ';
         }
@@ -208,17 +209,17 @@ public function getDetailSalary(string $id): array {
             while ($row2 = mysqli_fetch_array($result2)) {
             echo'
                     <tr>
-                      <td><a href="#">Nhân Viên #NV'.$row2['id'].'</a></td>
-                      <td>'.$row2['full_name'].'</td>
-                      <td>'.$row2['email'].'</td>
-                      <td><span class="text-muted"><i class="fa fa-clock-o"></i>'.$row2['created_at'].'</span> </td>
-                      <td>'.$row2['number_hour_work'].'</td>
-                      <td>'.$row2['number_day_work'].'</td>
-                      <td>'.number_format($row2['bonus']).'</td>
-                      <td>'.number_format($row2['allowances']).'</td>
-                      <td>'.number_format($row2['vat']).'</td>
-                      <td>'.number_format($row2['payment']).'</td>
-                      <td>'.number_format($row2['total_salary']).'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">Nhân Viên #NV'.$row2['id'].'</a></td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.$row2['full_name'].'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.$row2['email'].'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'"><span class="text-muted"><i class="fa fa-clock-o"></i>'.$row2['created_at'].'</span> </td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.$row2['number_hour_work'].'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.$row2['number_day_work'].'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.number_format($row2['bonus']).'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.number_format($row2['allowances']).'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.number_format($row2['vat']).'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.number_format($row2['payment']).'</td>
+                      <td><a href="extra_salary.php?id='.$row2['id'].'">'.number_format($row2['total_salary']).'</td>
                     </tr>
                     ';
         }
@@ -239,17 +240,17 @@ public function getDetailSalary(string $id): array {
         while ($row = mysqli_fetch_array($result3)) {
             echo'
                     <tr>
-                      <td><a href="#">Nhân Viên #NV'.$row['id'].'</a></td>
-                      <td>'.$row['full_name'].'</td>
-                      <td>'.$row['email'].'</td>
-                      <td><span class="text-muted"><i class="fa fa-clock-o"></i>'.$row['created_at'].'</span> </td>
-                      <td>'.$row['number_hour_work'].'</td>
-                      <td>'.$row['number_day_work'].'</td>
-                      <td>'.number_format($row['bonus']).'</td>
-                      <td>'.number_format($row['allowances']).'</td>
-                      <td>'.number_format($row['vat']).'</td>
-                      <td>'.number_format($row['payment']).'</td>
-                      <td>'.number_format($row['total_salary']).'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">Nhân Viên #NV'.$row['id'].'</a></td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.$row['full_name'].'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.$row['email'].'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'"><span class="text-muted"><i class="fa fa-clock-o"></i>'.$row['created_at'].'</span> </td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.$row['number_hour_work'].'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.$row['number_day_work'].'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.number_format($row['bonus']).'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.number_format($row['allowances']).'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.number_format($row['vat']).'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.number_format($row['payment']).'</td>
+                      <td><a href="extra_salary.php?id='.$row['id'].'">'.number_format($row['total_salary']).'</td>
                     </tr>
                     ';
         }
