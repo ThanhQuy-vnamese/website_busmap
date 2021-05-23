@@ -1,0 +1,79 @@
+*{
+    box-sizing: border-box;
+}
+.header{
+    width: 100%;
+    background-color: #11d497;
+}
+.logo img{
+    width: 50%;
+    align-items: flex-end;
+    border: 1px solid white;
+    border-radius: 15px;
+}
+.busmap{
+    font-family:Lucida Sans Unicode;
+    font-size: 30px;
+    font-weight: bold;
+
+    margin-top: 20px;
+}
+body .container-fluid{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.icon-login img{
+    width: 60%;
+}
+.login a{
+    font-weight: bold;
+    color: white;
+}
+.nav-bar{
+    border-bottom: 1px solid #11d497;
+}
+.icon-bus{
+    width: 60%;
+}
+.icon-watch{
+    width: 80%;
+}
+.tuyenxe{
+    background-color: rgb(241, 236, 236);
+    border-radius: 10px;
+}
+.list-bus{
+    border-right: 1px solid #11d497;
+}
+footer{
+    background-color: #11d497;
+}
+.fb-icon{
+    width: 80%;
+}
+.ins-icon{
+    width: 100%;
+}
+.yt-icon{
+    width: 70%;
+}
+.border-form{
+    width: 70%;
+    border: 1px solid;
+
+    border-radius: 10px;
+}
+.border-form h4{
+    border-bottom: 1px solid;
+    padding: 10px;
+}
+.form{
+    padding: 10px;
+}
+.menu-nav:hover{
+    background-color: #11d497;
+}
+.home-row{
+    display: flex;
+    align-items: center;
+}
