@@ -1,3 +1,7 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -97,9 +101,7 @@
       <div class="main-home container pt-4">
         <div class="main">
           <div class="row">
-            <h5 class="col-sm-12 col-md-12 col-lg-6">
-              DANH SÁCH CÁC ĐƠN HÀNG CỦA BẠN
-            </h5>
+            
             <div class="col-sm-12 col-md-12 col-lg-6">
               <div class="row" style="display: flex; align-items: center;">
                 <div
@@ -118,51 +120,45 @@
               
             </div>
           </div>
-         
-            <div class="listdonhang">
-              <a href="../thongtindonhang/thongtindonhang.php" style="color: black; text-decoration: none;">
+          <form action="" method="post" enctype="multipart/form-data" class="form">
+          <div class="row mt-3">
+                    <label for="txtsdt" class="col-sm-12 col-md-12 col-lg-2">Nhập SĐT người gửi:<span style="color: red;"><i>(*)</i></span></label>
+                    <div class="col-sm-12 col-md-12 col-lg-10">
+                        <input type="text" name="txtsdt" id="txtsdt" class="form-control">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                <input type="submit" class="btn btn-success" name="nut" id="nut" value="Tra cứu">
+                </div>
+            <h4 class="col-sm-12 col-md-12 col-lg-12">
+              DANH SÁCH CÁC ĐƠN HÀNG CỦA BẠN
+            </h4>
+           
                 <div class="row">
+                    <div class="col-sm-8 col-md-8 col-lg-8" style="font-weight:bold">Đơn hàng </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4"style="font-weight:bold">Trạng thái</div>
                   
-                    <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 1</div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">Đã giao</div>
-                  
                 </div>
-              </a>
-              <a href="../thongtindonhang/thongtindonhang.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 2</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đã giao</div>
-                </div>
-              </a>
-              <a href="../thongtindonhang/thongtindonhang.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 3</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đang giao</div>
-                </div>
-              </a>
-              <a href="../thongtindonhang/thongtindonhang.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 4</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đang giao</div>
-                </div>
-              </a>
-              <a href="../thongtindonhang/thongtindonhang.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 5</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đang giao</div>
-                </div>
-              </a>
-              <a href="../thongtindonhang/thongtindonhang.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 6</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đang giao</div>
-                </div>
-              </a>
-              </div>
+              
+             <?php
+                       
+                       if (isset($_REQUEST['nut'])) {
+                      
+                      $sdtgui=$_POST['txtsdt'];
+                        $p->showhang($sdtgui);
+                      }
+                           
+                   
+                ?>
+          </form>
+            
           </div>
+
+          
         
       </div>
     </div>
+
     <footer>
     <div class="container">
       <div class="row">

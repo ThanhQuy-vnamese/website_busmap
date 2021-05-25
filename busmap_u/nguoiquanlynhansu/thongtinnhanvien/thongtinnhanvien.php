@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,7 +77,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -89,40 +106,24 @@
         </div>
       </nav>
       <div class="main-home container pt-3 pb-3">
-        <h4 class="text-center">THÔNG TIN NHÂN VIÊN</h4>
+        <h3 class="text-center">THÔNG TIN NHÂN VIÊN</h3>
         <div class="row mt-3">
             
             <div class="col-sm-1 col-md-1 col-lg-1"></div>
             <div class="col-sm-10 col-md-10 col-lg-10">
                 <div class="row">
-                  <div class="col-sm-12 col-md-2 col-lg-2"></div>
-                    <div class="col-sm-12 col-md-9 col-lg-9">
-                        <p>Họ tên: Nguyễn Minh Mẫn</p>
-                        <p>Ngày sinh: 30/04/2000</p>
-                        <p>Mã số nhân viên: 1234567</p>
-                        <p>Email: minhman@gmail.com</p>
-                        <p>Địa chỉ: 12, Nguyễn Văn Bảo,phường 4,Gò Vấp,TPHCM</p>
-                        <p>Số điện thoại: 0123456789</p>
-                        <p>Chức vụ: Nhân viên bán vé</p>
-                        <div class="row">
-                          <div class="col-sm-0 col-md-1 col-lg-1"></div>
-                          <div class="col-sm-0 col-md-11 col-lg-11">
-                              <div class="row">
-                                  <div class="col-sm-12 col-md-4 col-lg-4">
-                                      <button class="btn">In thông tin</button>
-                                  </div>
-                                  <div class="col-sm-12 col-md-3 col-lg-3">
-                                      <button class="btn btn-primary"><a href="../suathongtinnhanvien/suathongtinnhanvien.php" style="color: white; text-decoration: none;">Sửa thông tin</a></button>
-                                  </div>
-                                  <div class="col-sm-12 col-md-1 col-lg-1"></div>
-                                  <div class="col-sm-12 col-md-4 col-lg-4">
-                                      <button class="btn btn-danger"><a href="" data-toggle="modal" data-target="#myModaldelete" style="text-decoration: none; color: white;">Xóa</a></button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3 ">
                     </div>
-                    
+                    <div class="col-sm-12 col-md-9 col-lg-9">
+						<?php
+						$ct=$_REQUEST['id'];
+						if($ct!='')
+						{
+						$p->xuatthongtinnv("select*from users , user_details Where users.id=user_details.id_user and id_user='$ct'");
+						}
+						?>
+                        
+                    </div>
                 </div>
             </div>
             <div class="col-sm-1 col-md-1 col-lg-1"></div>
@@ -165,43 +166,5 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
-
-  <div id="myModaldelete" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Xác nhận</p><br>
-            <p>Bạn có chắc chắn muốn xóa nhân viên này?</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button class="btn btn-default" onclick="clickdelete()"><a href="" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>
 

@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +76,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -84,52 +101,27 @@
         <div class="container">
             <div class="row ml-5 mr-5">
                 <div class="col-sm-6 col-md-6 col-lg-6"><b>DANH SÁCH VÉ</b></div>
-                <div class="col-sm-2 col-md-2 col-lg-2"></div>
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                    <input type="date" name="" id="" class="form-control">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-1 col-md-1 col-lg-1 mt-1"></div>
-                <div class="col-sm-10 col-md-10 col-lg-10 mt-1">
-                    <div class="row ve">
-                        <div class="col-sm-6 col-md-6 col-lg-6 mt-3">+0123456789</div>
-                        <div class="col-sm-6 col-md-6 col-lg-6 mt-3 text-right"><a href="">Đã thanh toán</a></div>
-                    </div>  
-                </div>
-                <div class="col-sm-1 col-md-1 col-lg-1 mt-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-1 col-md-1 col-lg-1 mt-1"></div>
-                <div class="col-sm-10 col-md-10 col-lg-10 mt-1">
-                    <div class="row ve">
-                        <div class="col-sm-6 col-md-6 col-lg-6 mt-3">+0123456789</div>
-                        <div class="col-sm-6 col-md-6 col-lg-6 mt-3 text-right"><a href="" style="color: red;">Chưa thanh toán</a></div>
-                    </div>  
-                </div>
-                <div class="col-sm-1 col-md-1 col-lg-1 mt-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-1 col-md-1 col-lg-1 mt-1"></div>
-                <div class="col-sm-10 col-md-10 col-lg-10 mt-1">
-                    <div class="row ve">
-                        <div class="col-sm-6 col-md-6 col-lg-6 mt-3">+0123456789</div>
-                        <div class="col-sm-6 col-md-6 col-lg-6 mt-3 text-right"><a href="" style="color: red;">Chưa thanh toán</a></div>
-                    </div>  
-                </div>
-                <div class="col-sm-1 col-md-1 col-lg-1 mt-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-1 col-md-1 col-lg-1 mt-1"></div>
-                <div class="col-sm-10 col-md-10 col-lg-10 mt-1">
-                    <div class="row ve">
-                        <div class="col-sm-6 col-md-6 col-lg-6 mt-3">+0123456789</div>
-                        <div class="col-sm-6 col-md-6 col-lg-6 mt-3 text-right"><a href="">Đã thanh toán</a></div>
-                    </div>  
-                </div>
-                <div class="col-sm-1 col-md-1 col-lg-1 mt-1"></div>
-            </div>
-        </div>
+						<div class="table-responsive">
+							<table id="tickets" class="table mt-0 table-hover no-wrap table-borderless" data-page-size="10">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Đơn giá</th>
+										<th>Giảm Gía</th>
+										<th>Tình trạng vé</th>
+                    <th>Tình trạng hóa đơn</th>
+										<th>Loại vé</th>
+										<!-- <th>Xóa</th> -->
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+										$p->Ticket_list();
+									?>
+								</tbody>
+							</table>
+						</div>
+					</div>
       </div>
     </div>
   </body>

@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +76,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -105,7 +122,7 @@
               DANH SÁCH CÁC ĐƠN HÀNG CỦA BẠN
             </h5>
             <div class="col-sm-12 col-md-12 col-lg-6">
-              <div class="row" style="display: flex; align-items: center;">
+              <div class="row">
                 <div
                   class="col-sm-3 col-md-3 col-lg-3 d-flex justify-content-end"
                 >
@@ -124,44 +141,11 @@
           </div>
          
             <div class="listdonhang">
-              <a href="../thongtindonhang-TV/thongtindonhang_TV.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  
-                    <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 1</div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">Đã giao</div>
-                  
-                </div>
-              </a>
-              <a href="../thongtindonhang-TV/thongtindonhang_TV.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 2</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đã giao</div>
-                </div>
-              </a>
-              <a href="../thongtindonhang-TV/thongtindonhang_TV.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 3</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đang giao</div>
-                </div>
-              </a>
-              <a href="../thongtindonhang-TV/thongtindonhang_TV.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 4</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đang giao</div>
-                </div>
-              </a>
-              <a href="../thongtindonhang-TV/thongtindonhang_TV.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 5</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đang giao</div>
-                </div>
-              </a>
-              <a href="../thongtindonhang-TV/thongtindonhang_TV.php" style="color: black; text-decoration: none;">
-                <div class="row">
-                  <div class="col-sm-8 col-md-8 col-lg-8">Đơn hàng 6</div>
-                  <div class="col-sm-4 col-md-4 col-lg-4">Đang giao</div>
-                </div>
-              </a>
+              
+              <?php
+                    $p->showhang();
+              ?>
+
               </div>
           </div>
         
@@ -203,23 +187,4 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>

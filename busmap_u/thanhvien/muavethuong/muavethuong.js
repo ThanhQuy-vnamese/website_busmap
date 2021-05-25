@@ -7,7 +7,5 @@ function validateForm_soluong(){
         var soluong = document.getElementById("soluong").value;
         if (regExp.test(soluong) == false) 
             alert('Số lượng không hợp lệ!');
-        
-            
     }
 }

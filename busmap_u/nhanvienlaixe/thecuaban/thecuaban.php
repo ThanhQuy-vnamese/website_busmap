@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +76,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -99,13 +116,16 @@
                     <p><b>Hợp tác xã vận tải nhóm 7</b></p>
                     <p>12, Nguyễn Văn Bảo, phường 4, Gò Vấp, thành phố Hồ Chí Minh</p>
                     <div class="row">
+                    <?php
+            $id=$_SESSION['id'];
+            $userDetail=$p->getDetailUser($id);
+            ?>
                         <div class="col-sm-12 col-md-12 col-lg-12">
-                            <p class="text-center">số:&nbsp;<span style="color: red;">04062021123</span></p>
+                            <p class="text-center">số:&nbsp;<span style="color: red;"><?php echo date("Ymd")?><?php echo random_int(0,100)?></span></p>
                             <h4 class="text-center">THẺ XE BUÝT</h4>
-                            <p>Họ và tên: </p>
-                            <p>Ngày sinh:</p>
-                            <p>Đối tượng:</p>
-                            <p class="text-center">Hạn sử dụng:</p>
+                            <p>Họ và tên: <?php echo $userDetail['full_name']?></p>
+                            <p>Loại Vé: Vé Tháng</p>
+                            <p class="text-center">Hạn sử dụng: 30 ngày</p>
                         </div>
                     </div>
                 </div>
@@ -150,33 +170,4 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-  <div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-body text-center">
-          <p class="modal-title">Đăng xuất!</p>
-          <br />
-          <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            <a
-              href="./dangkyvethang.php"
-              style="text-decoration: none; color: black"
-              >
-            Hủy</a>
-          </button>
-          <button type="button" class="btn btn-default">
-            <a
-              href="../../khachvanglai/Home/Home.php"
-              style="text-decoration: none; color: black"
-              >Xác nhận</a
-            >
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </html>

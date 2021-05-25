@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +76,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -80,47 +97,29 @@
           </ul>
         </div>
 </nav>
-      <div class="main-home container pt-3 pb-3">
+<div class="main-home container pt-3 pb-3">
             <h4 class="text-center">PHIẾU LƯƠNG</h4>
+            <form method="post" >
             <div class="d-flex justify-content-center">
-                <input type="date" name="" id="" class="form-control" style="width: 18%;" >
+              <label class="text-center">Chọn Tháng Lương </label>
+                <input type="date" name="date" id="date" class="form-control" style="width: 18%;" >
+                <button type="submit" name="xem" class="col-2 btn btn-success">Xem Lương</button>
             </div>
-            <p class="text-center">Họ tên nhân viên:......................................................................................................................................................................................</p>
-            <p class="text-center">Mã số nhân viên:.........................................................................................................................................................................................</p>
-            <p class="text-center">Chức vụ:..........................................................................................................................................................................................................</p>
-            <table class="table table-bordered">
-                <tr>
-                    <td colspan="2">Lương</td>
-                    <td rowspan="2">Khoản trừ vào lương/ Bảo hiểm</td>
-                </tr>
-                <tr>
-                    <td>Lương cơ bản (Theo giờ)</td>
-                    <td>Phụ cấp/ Thưởng</td>
-
-                </tr>
-                <tr>
-                    <td>Lương cơ bản</td>
-                    <td>PC công việc:<br>
-                        PC tiền cơm:
-                    </td>
-                    <td>
-                        Bảo hiểm y tế:<br>
-                        Bảo hiểm tai nạn:<br>
-                        Bảo hiểm thất nghiệp:
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">Tổng lương</td>
-                    <td>Tổng trừ:</td>
-                </tr>
-                <tr>
-                    <td colspan="3">Thực lĩnh:</td>
-                </tr>
-            </table>
+            <?php
+              if(isset($_REQUEST['xem'])){
+                $date=$_REQUEST['date'];
+                $id=$_SESSION['id'];
+                if($date!=''){
+                $p->getDetailSalary($id, $date);
+              }
+              else{
+                echo'vui lòng chọn ngày tháng';
+              }
+              }
+            ?>
+            </form>
         </div>
-      </div>
-    </div>
-  </body>
+    </div></body>
   <footer>
     <div class="container">
       <div class="row">
@@ -156,24 +155,5 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>
 

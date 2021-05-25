@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,7 +77,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php">Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -81,111 +98,111 @@
           </ul>
         </div>
 </nav>
+    
 <div class="main-home container">
-  <div class="row">
-    <div class="col-sm-12 col-md-3 col-lg-3 list-bus pt-3">
-      <a href="../dangkyvethang/dangkyvethang.php" style="color: black; text-decoration: none;"><b>Đăng ký vé tháng</b></a>
-      <br><a href="../thecuaban/thecuaban.php" style="color: black; text-decoration: none;"><b>Thẻ của bạn</b></a>
-    </div>
-    <div class="col-sm-12 col-md-8 col-lg-8 d-flex justify-content-center">
-      <div class="border-form">
-        <h4 class="text-center">MUA VÉ THÁNG XE BUS</h4>
-        <p class="text-center">Mã số vé: 0412344565465</p>
-        <form action="" class="form">
-          <div class="row mt-2">
-            <label for="" class="col-sm-12 col-md-4 col-lg-4"
-              >Chọn đối tượng:<span style="color: red"><i>(*)</i></span>
-            </label>
-            <div class="col-sm-12 col-md-8 col-lg-8">
-              <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-6">
-
-                  <div class="row" style="display: flex; align-items: center;">
-                      <div class="col-sm-3 col-md-3 col-lg-3">
-                    <input
-                      type="radio"
-                      name="loai"
-                      id="nguoithuong"
-                      class="form-control"
-                      value="nguoithuong"
-                    /></div>
-                    <label class="col-sm-9 col-md-9 col-lg-9" for="nguoithuong">Người thường</label>
+        <div class="row">
+          <div class="col-sm-12 col-md-3 col-lg-3 list-bus pt-3">
+            <a href="../dangkyvethang/dangkyvethang.php" style="color: black; text-decoration: none;"><b>Đăng ký vé tháng</b></a>
+            <br><a href="../thecuaban/thecuaban.php" style="color: black; text-decoration: none;"><b>Thẻ của bạn</b></a>
+          </div>
+          <div class="col-sm-12 col-md-8 col-lg-8 d-flex justify-content-center">
+            <div class="border-form">
+           
+              <h4 class="text-center">MUA VÉ THÁNG XE BUS</h4>
+              <p class="text-center">Mã số vé: <?php echo date("Ymd")?><?php echo random_int(0,100)?></p>
+              <form method="post" enctype="multipart/form-data" name="form1" id="form1">
+              <?php
+            $id=$_SESSION['id'];
+            $userDetail=$p->getDetailUser($id);
+            ?>
+                <div class="row mt-2">
+                  <label for="" class="col-sm-12 col-md-4 col-lg-4"
+                    >Chọn đối tượng:<span style="color: red"><i>(*)</i></span>
+                  </label>
+                  <div class="col-sm-12 col-md-8 col-lg-8">
+					  <div class="row">
+						 <div class="col-sm-0 col-md-1 col-lg-1"></div>
+            
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <select name="doituong" id="doituong" class="form-control" style="height: 30px;">
+                    <option value="90.000">Học sinh ,Sinh viên</option>
+                    <option value="210.000">Người Thường</option>
+                   
+					
+                </select>
+            </div>
+            <div class="col-sm-0 col-md-1 col-lg-1"></div>
+					  </div>
                   </div>
+                </div>
+                <div class="row mt-2">
+                  <label for="datestart" class="col-sm-12 col-md-4 col-lg-4"
+                    >Chọn ngày bắt đầu:<span style="color: red"><i>(*)</i></span>
+                  </label>
+                  <div class="col-sm-12 col-md-8 col-lg-8">
+                    <input type="date" name="date" id="date" class="form-control" />
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <label for="name" class="col-sm-12 col-md-4 col-lg-4"
+                    >Họ và tên:<span style="color: red"><i>(*)</i></span
+                    >:
+                  </label>
+                  <div class="col-sm-12 col-md-8 col-lg-8">
+                    <input type="text" name="name" id="name" class="form-control" value="<?=$userDetail['full_name']?>"/>
+                  </div>
+                </div>
                 
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                  <div class="row" style="display: flex; align-items: center;">
-                      <div class="col-sm-3 col-md-3 col-lg-3">
-                    <input
-                      type="radio"
-                      name="loai"
-                      id="hssv"
-                      class="form-control"
-                      value="hssv"
-                    /></div>
-                    <label class="col-sm-9 col-md-9 col-lg-9" for="hssv">Học sinh, sinh viên</label>
+                <div class="row mt-2">
+                  <label for="address" class="col-sm-12 col-md-4 col-lg-4"
+                    >Địa chỉ:<span style="color: red"><i>(*)</i></span
+                    >:
+                  </label>
+                  <div class="col-sm-12 col-md-8 col-lg-8">
+                    <input type="text" name="address" id="address" class="form-control" value="<?=$userDetail['address']?>"/>
                   </div>
                 </div>
-              </div>
+                <div class="row mt-2">
+                  <label for="" class="col-sm-12 col-md-4 col-lg-4"
+                    >Ảnh thẻ HSSV:<span style="color: red"><i>(nếu mua vé HSSV)(*)</i></span>
+                  </label>
+                  <div class="col-sm-12 col-md-8 col-lg-8">
+                    <input type="file" name="txtfile" id="txtfile" class="form-control" />
+                  </div>
+                </div>
+                
+                <div class="d-flex justify-content-center mt-2">
+
+					<input class="btn btn-success" type="submit"  name="sub" id="sub" value="Đăng Ký">
+                </div>
+				  
+				  		<?php
+				  			if(isset($_REQUEST['sub']))
+							{
+								$doituong=$_REQUEST['doituong'];
+								$ngay=$_REQUEST['date'];
+								// $time=date("Y/m/d",$ngay);
+								$name=$_FILES['txtfile']['name'];
+								$local=$_FILES['txtfile']['tmp_name'];
+							$id_user=$_SESSION['id'];
+								if($p->uploadfile($local,"../upload",$name)==1)
+								{
+                
+									$p->themvethang($id_user, $doituong, $name, $ngay);
+                }
+                else{
+                  echo'thẻ hssv không hợp lệ';
+                }
+              }
+				  		?>
+              </form>
             </div>
           </div>
-          <div class="row mt-2">
-            <label for="datestart" class="col-sm-12 col-md-4 col-lg-4"
-              >Chọn ngày bắt đầu:<span style="color: red"><i>(*)</i></span>
-            </label>
-            <div class="col-sm-12 col-md-8 col-lg-8">
-              <input type="date" name="datestart" id="datestart" class="form-control" />
-            </div>
-          </div>
-          <div class="row mt-2">
-            <label for="name" class="col-sm-12 col-md-4 col-lg-4"
-              >Họ và tên:<span style="color: red"><i>(*)</i></span
-              >:
-            </label>
-            <div class="col-sm-12 col-md-8 col-lg-8">
-              <input type="text" name="name" id="name" class="form-control"/>
-            </div>
-          </div>
-          <div class="row mt-2">
-            <label for="ngaysinh" class="col-sm-12 col-md-4 col-lg-4"
-              >Ngày sinh:<span style="color: red"><i>(*)</i></span
-              >:
-            </label>
-            <div class="col-sm-12 col-md-8 col-lg-8">
-              <input type="date" name="ngaysinh" id="ngaysinh" class="form-control" />
-            </div>
-          </div>
-          <div class="row mt-2">
-            <label for="address" class="col-sm-12 col-md-4 col-lg-4"
-              >Địa chỉ:<span style="color: red"><i>(*)</i></span
-              >:
-            </label>
-            <div class="col-sm-12 col-md-8 col-lg-8">
-              <input type="text" name="address" id="address" class="form-control"/>
-            </div>
-          </div>
-          <div class="row mt-2">
-            <label for="" class="col-sm-12 col-md-4 col-lg-4"
-              >Ảnh thẻ HSSV:<span style="color: red"><i>(nếu mua vé HSSV)(*)</i></span>
-            </label>
-            <div class="col-sm-12 col-md-8 col-lg-8">
-              <input type="file" name="" id="" class="form-control" />
-            </div>
-          </div>
-          
-          <div class="d-flex justify-content-center mt-2">
-            <button class="btn btn-success" onclick="dangkyvethang()">
-              
-              Đăng ký
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-    </div>
-    <footer>
+  </body>
+  <footer>
     <div class="container">
       <div class="row">
         <div class="col-sm-12 col-md-4 col-lg-4">
@@ -219,36 +236,6 @@
       </div>
     </div>
   </footer>
-  </body>
-  
 
-  <!-- Modal -->
-  <div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-body text-center">
-          <p class="modal-title">Đăng xuất!</p>
-          <br />
-          <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            <a
-              href="./dangkyvethang.php"
-              style="text-decoration: none; color: black"
-              >
-            Hủy</a>
-          </button>
-          <button type="button" class="btn btn-default">
-            <a
-              href="../../khachvanglai/Home/Home.php"
-              style="text-decoration: none; color: black"
-              >Xác nhận</a
-            >
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </html>
+

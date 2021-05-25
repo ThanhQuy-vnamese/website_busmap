@@ -1,3 +1,21 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+include("../source/csdl_luong.php");
+$d=new Salary();
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +77,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php">Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -90,85 +108,45 @@
         
       </div>
       <div class="main-home container pt-3 pb-3">
-            <h4 class="text-center">DANH SÁCH LƯƠNG NHÂN VIÊN</h4>
-            <div class="row mt-4 mb-3">
-              <div class="col-sm-12 col-md-12 col-lg-3">
-                <div class="row">
-                  <label for="bophan" class="col-sm-12 col-md-3 col-lg-5">Bộ phận:</label>
-                  <div class="col-sm-12 col-md-7 col-lg-7">
-                    <select name="bophan" id="bophan">
-                      <option value="nhanviencuacongty">Nhân viên của công ty</option>
-                      <option value="nhanvienbanve">Nhân viên bán vé</option>
-                      <option value="nhanvientaixe">Nhân viên tài xế</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-1"></div>
-              <div class="col-sm-12 col-md-12 col-lg-3">
-                <div class="row">
-                  <label for="luongthang" class="col-sm-12 col-md-6 col-lg-6">Lương tháng:</label>
-                  <div class="col-sm-12 col-md-6 col-lg-6">
-                    <input type="date" name="luongthang" id="luongthang">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-1"></div>
-              <div class="col-sm-12 col-md-12 col-lg-4">
-                <div class="row">
-                  <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-end">
-                    <button class="btn btn-success">Lưu</button>
-                  </div>
-                  <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-start">
-                    <button>In danh sách</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <table class="table table-bordered table-hover">
-                <tr>
-                  <td rowspan="2" class="text-center">Họ tên</td>
-                  <td rowspan="2" class="text-center">Mã</td>
-                  <td rowspan="2" class="text-center">Số ngày làm</td>
-                  <td colspan="2" class="text-center">Phụ cấp</td>
-                  <td colspan="2" class="text-center">Khoản trừ vào lương</td>
-                </tr>
-              <tr>
-                <td class="text-center">Công việc</td>
-                <td class="text-center">Tiền cơm</td>
-                <td class="text-center">Bảo hiểm</td>
-                <td class="text-center"></td>
-              </tr>
-              <tr>
-                <td class="text-center">Nguyễn Minh Mẫn</td>
-                <td class="text-center">12345678</td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-              </tr>
-              <tr>
-                <td class="text-center">Trần Huỳnh Ngọc Thủy</td>
-                <td class="text-center">12345679</td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-              </tr>
-              <tr>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-              </tr>
-            </table>
-        </div>
-      </div>
+        <h4 class="text-center">DANH SÁCH LƯƠNG NHÂN VIÊN</h4>
+        
+        <form action="" method="post">
+										<div class="form-group row">
+                    <label for="date" class="col-md-2">Lương tháng:</label>
+											<div class="col-md-2">
+												<input type="date" name="date" id="date">
+											</div>
+											<div class="col-md-3">
+                      
+											<select name="user" id="user" class="custom-select" style="height: 30px;">
+													<option value="">Chọn Nhân Viên</option>
+													<?php
+													$d->user_list();
+													?>
+												</select>
+											</div>
+											<div class="col-md-1">
+												<button type="submit" class="btn btn-primary " name="btn-add">Xem</button>
+											</div>
+											
+											<div class="col-md-2">
+												<button type="submit" class="btn btn-danger " name="btn-print">in danh sách</button>
+											</div>
+											
+										</div>
+										
+										<?php
+										if (isset($_REQUEST['btn-add'])) {
+											$date = $_REQUEST['date'];
+											$id_user = $_REQUEST['user'];
+											if($date!='' || $id_user !=''){
+											$d->Salary_list2($date, $id_user);
+											}
+											else echo'Vui lòng chọn thông tin để xem chi tiết lương.';
+										}
+										?>
+
+									</form>
     </div>
   </body>
   <footer>
@@ -206,24 +184,5 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>
 

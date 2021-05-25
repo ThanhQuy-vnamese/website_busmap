@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+$id = $_REQUEST['id'] ?? '';
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,7 +77,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php">Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -90,47 +107,72 @@
       <div class="main-home container d-flex justify-content-center">
         <div class="border-form">
             <h4 class="text-center">CẬP NHẬT THÔNG TIN</h4>
-            <form action="" class="form">
+            <form action="" class="form" method="post">
+            <?php
+            $id=$_SESSION['id'];
+            $userDetail=$p->getDetailUser($id);
+            ?>
                 <div class="row mt-2">
-                    <label for="username" class="col-sm-12 col-md-4 col-lg-4">Họ tên: <span style="color: red;"><i>(*)</i></span></label>
+                    <label for="username" class="col-sm-12 col-md-4 col-lg-4">Họ tên:<span style="color: red;"><i>(*)</i></span> </label>
                     <div class="col-sm-12 col-md-8 col-lg-8">
-                        <input type="text" name="username" id="username" class="form-control">
+                        <input type="text" name="full_name" id="full_name" value="<?=$userDetail['full_name']?>" class="form-control">
                     </div>
                 </div>
                 <div class="row mt-2">
-                  <label for="email" class="col-sm-12 col-md-4 col-lg-4">Email: <span style="color: red;"><i>(*)</i></span></label>
+                  <label for="email" class="col-sm-12 col-md-4 col-lg-4">Email:<span style="color: red;"><i>(*)</i></span> </label>
                   <div class="col-sm-12 col-md-8 col-lg-8">
-                      <input type="text" name="email" id="email" class="form-control" onfocusout="validateForm_email()">
+                      <input type="text" name="email" id="email" class="form-control" value="<?=$userDetail['email']?>" onfocusout="validateForm_email()">
                   </div>
               </div>
               <div class="row mt-2">
-                  <label for="phone" class="col-sm-12 col-md-4 col-lg-4">Số điện thoại: <span style="color: red;"><i>(*)</i></span></label>
+                  <label for="phone" class="col-sm-12 col-md-4 col-lg-4">Số điện thoại:<span style="color: red;"><i>(*)</i></span></label>
                   <div class="col-sm-12 col-md-8 col-lg-8">
-                      <input type="text" name="phone" id="phone" class="form-control" onfocusout="validateForm_phone()">
+                      <input type="text" name="phone" id="phone" class="form-control" value="<?=$userDetail['phone']?>" onfocusout="validateForm_phone()">
                   </div>
               </div>
               <div class="row mt-2">
-                  <label for="address" class="col-sm-12 col-md-4 col-lg-4">Địa chỉ: <span style="color: red;"><i>(*)</i></span></label>
+                  <label for="address" class="col-sm-12 col-md-4 col-lg-4">Địa chỉ:<span style="color: red;"><i>(*)</i></span></label>
                   <div class="col-sm-12 col-md-8 col-lg-8">
-                      <input type="text" name="address" id="address" class="form-control">
+                      <input type="text" name="address" id="address" value="<?=$userDetail['address']?>"  class="form-control">
                   </div>
               </div>
               <div class="row mt-2">
-                  <label for="password" class="col-sm-12 col-md-4 col-lg-4">Mật khẩu: <span style="color: red;"><i>(*)</i></span></label>
+                  <label for="password" class="col-sm-12 col-md-4 col-lg-4">Mật khẩu:<span style="color: red;"><i>(*)</i></span></label>
                   <div class="col-sm-12 col-md-8 col-lg-8">
                       <input type="password" name="password" id="password" class="form-control">
                   </div>
               </div>
               <div class="row mt-2">
-                  <label for="repassword" class="col-sm-12 col-md-4 col-lg-4">Nhập lại mật khẩu: <span style="color: red;"><i>(*)</i></span></label>
+                  <label for="repassword" class="col-sm-12 col-md-4 col-lg-4">Nhập lại mật khẩu:<span style="color: red;"><i>(*)</i></span></label>
                   <div class="col-sm-12 col-md-8 col-lg-8">
                       <input type="password" name="repassword" id="repassword" class="form-control" onfocusout="validateForm_repassword()">
                   </div>
               </div>
               <div class="d-flex justify-content-center mt-2">
-                  <button type="submit" class="btn btn-success" onclick="capnhatthongtin()">Lưu thông tin</button>
+                  <button type="submit" name="btn-update" class="btn btn-success" onclick="capnhat()">Lưu thông tin</button>
               </div>
             </form>
+            <?php
+        if (isset($_REQUEST['btn-update'])) {
+          $data = [];
+          $data['address'] = $_REQUEST['address'];
+          $data['permission'] = $_SESSION['permission'];
+          $data['phone'] = $_REQUEST['phone'];
+          $data['full_name']=$_REQUEST['full_name'];
+          $data['password']=$_SESSION['password'];
+          $data['email'] = $_REQUEST['email'];
+          if ($p->updateUser($data, $id)) {
+            echo '<script language="javascript">
+                            alert("Cập nhật thành công");
+                                window.location="../thongtincanhan/thongtincanhan.php?id=' . $id . '";
+                            </script>';
+          } else {
+            echo '<div class="alert alert-danger">
+                                    Thất bại
+                                </div>';
+          }
+        }
+        ?>
         </div>
       </div>
     </div>
@@ -170,24 +212,5 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal"><a href="./capnhatthongtin.php" style="text-decoration: none; color: black;">Hủy</a></button>
-          <button type="button" class="btn btn-default"><a href="../Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>
 

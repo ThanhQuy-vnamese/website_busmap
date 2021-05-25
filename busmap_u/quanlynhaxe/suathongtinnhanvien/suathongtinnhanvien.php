@@ -1,7 +1,19 @@
 <?php
 include("../source/csdl_thanhvien.php");
-$p = new csdl();
+$p=new csdl();
 $id = $_REQUEST['id'] ?? '';
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +58,7 @@ $id = $_REQUEST['id'] ?? '';
                 <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                 <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                 <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                <a class="dropdown-item" href="../../logout.php" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
               </div>
             </div>
           </div>
@@ -94,7 +106,7 @@ $id = $_REQUEST['id'] ?? '';
         <div class="form-group row">
           <label class="col-form-label col-md-1">Họ tên</label>
           <div class="col-md-5">
-            <input type="text" value="<?= $userDetail['full_name'] ?>" disabled class="form-control">
+            <input type="text" name="full_name" id="full_name" value="<?= $userDetail['full_name'] ?>"class="form-control">
           </div>
           <label class="col-form-label col-md-1">Email</label>
           <div class="col-md-5">
@@ -162,7 +174,8 @@ $id = $_REQUEST['id'] ?? '';
           $data['address'] = $_REQUEST['address'];
           $data['permission'] = $_REQUEST['permission'];
           $data['phone'] = $_REQUEST['phone'];
-
+          $data['full_name']=$_REQUEST['full_name'];
+          $data['password']=$_SESSION['password'];
           $data['email'] = $_REQUEST['email'];
           if ($p->updateUser($data, $id)) {
             echo '<script language="javascript">
@@ -226,24 +239,5 @@ $id = $_REQUEST['id'] ?? '';
   </div>
 </footer>
 
-<!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-
-      <div class="modal-body text-center">
-        <p class="modal-title">Đăng xuất!</p><br>
-        <p>Bạn có chắc chắn muốn đăng xuất</p>
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 </html>

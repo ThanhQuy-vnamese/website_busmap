@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +76,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -89,25 +106,28 @@
       </nav>
       <div class="main-home container pt-3 pb-3">
         <h4 class="text-center">DANH SÁCH NHÂN VIÊN</h4>
+		  <form method="post" name="form1" target="_top" id="form1">
         <div class="row">
-          <div class="col-sm-12 col-md-1 col-lg-1"></div>
-            <div class="col-sm-12 col-md-5 col-lg-5" style="display: flex; align-items: center;">
+            <div class="col-sm-12 col-md-5 col-lg-5">
                 <div class="row mt-3">
                     <label for="bophan" class="col-sm-12 col-md-4 col-lg-4">Bộ phận</label>
                     <div class="col-sm-12 col-md-8 col-lg-8">
-                        <select name="bophan" id="bophan" class="form-control">
-                            <option value="nhanviencuacongty">Nhân viên của công ty</option>
-                            <option value="nhanvienbanve">Nhân viên bán vé</option>
-                            <option value="nhanvientaixe">Nhân viên tài xế</option>
-                          </select>
+
+						
+				  <select name="select" id="select" style="line-height: 90px;" class="custom-select" onchange="location = this.value;">
+					<option value="quanlynhanvien.php" selected>Chọn nhân viên thuộc bộ phận:</option>
+				  <option value="quanlynhanvien.php?id=2">Nhân viên bán vé</option>
+				  <option value="quanlynhanvien.php?id=3">Nhân viên lái xe</option>
+				  <option value="quanlynhanvien.php?id=4">Nhân viên kế toán</option>
+				</select>
                     </div>
                 </div>
             </div>
-            
+            <div class="col-sm-12 col-md-1 col-lg-1"></div>
             <div class="col-sm-12 col-md-3 col-lg-3">
                 <button class="mt-4">In danh sách</button>
             </div>
-            <div class="col-sm-12 col-md-3 col-lg-3 pt-3">
+            <div class="col-sm-12 col-md-3 col-lg-3 pt-4">
                 <div class="row" style="display: flex; align-items: center;">
                     <div class="col-sm-8 col-md-8 col-lg-8">
                         <a href="../themnhanvien/themnhanvien.php" class=" d-flex justify-content-end">Thêm nhân viên mới</a>
@@ -128,18 +148,20 @@
                   <th>Địa chỉ</th>
                 </tr>
             </thead>
-            <tr>
-                <td><a href="../thongtinnhanvien/thongtinnhanvien.php" style="color: black; text-decoration: none">Nguyễn Minh Mẫn</a></td>
-                <td>12345678</td>
-                <td>012345678</td>
-                <td>265 Nguyễn Văn Lượng</td>
-            </tr>
-            <tr>
-                <td><a href="../thongtinnhanvien/thongtinnhanvien.php" style="color: black; text-decoration: none">Trần Huỳnh Ngọc Thủy</a></td>
-                <td>12345679</td>
-                <td>0123456789</td>
-                <td></td>
-            </tr>
+           
+            <?php
+			
+			if(isset($_REQUEST['id']))
+			{
+        $ct=$_REQUEST['id'];
+			$p->xuatnv("select*from users left join user_details on users.id=user_details.id_user  where permission ='$ct'");
+			}
+			else
+			{
+			$p->xuatnv("select*from users left join user_details on users.id=user_details.id_user  where permission like 2 or permission like 3 
+      or permission like 4");	
+			}
+			?>
             <tr>
                 <td></td>
                 <td></td>
@@ -150,8 +172,7 @@
     </div>
       </div>
     </div>
-  </body>
-  <footer>
+    <footer>
     <div class="container">
       <div class="row">
         <div class="col-sm-12 col-md-4 col-lg-4">
@@ -185,27 +206,8 @@
       </div>
     </div>
   </footer>
-
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
-
+  </body>
+ 
   
 </html>
 

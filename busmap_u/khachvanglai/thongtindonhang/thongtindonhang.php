@@ -1,3 +1,7 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -95,66 +99,19 @@
         </div>
       </nav>
       <div class="main-home container pt-4 pb-4">
+
+      
         <h4 class="text-center">THÔNG TIN ĐƠN HÀNG</h4>
-        <div class="d-flex justify-content-center">
-          <div class="infordonhang">
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                Tên người gửi: Nguyễn Văn A
-              </div>
-              <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                Số điện thoại người gửi: 012345678
-              </div>
-            </div>
-            <br />
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                Tên người nhận: Nguyễn Văn B
-              </div>
-              <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                Số điện thoại người nhận: 012345678
-              </div>
-            </div>
-            <br />
-            <p>Trạm gửi hàng: Trạm điện lực Gò Vấp</p>
-            <p>Trạm nhận hàng: Trạm trường ĐH Công nghiệp TP.HCM</p>
-            <p>Khối lượng: 4kg</p>
-            <p>Mô tả: Hàng dễ vỡ vui lòng nhẹ tay</p>
-            <p class="text-right">Ngày gửi: 04/09/2021</p>
-          </div>
+        <div style="text-align:center">
+        <?php
+            $p->showdonhang();
+        ?>
         </div>
-        <h4 class="text-center">ĐƠN HÀNG CỦA BẠN</h4>
-        <div class="d-flex justify-content-center">
-            <div class="infordonhangcuaban">
-              <p class="text-center">Mã đơn: 123456789</p>
-              <br>
-              <div class="row">
-                <p class="ml-3">Ngày gửi: 04/09/2021</p>
-              </div>
-              <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  Phí vận chuyển:
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                  15.000 VNĐ
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <b>Tổng:</b>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                  <b>15.000 VNĐ</b>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class=" d-flex justify-content-center mt-4">
-              <buton class="btn btn-success" name="xacnhandanhanhang">Xác nhận đã nhận hàng</buton>
-          </div>
+        
+        
       </div>
     </div>
+  
   </body>
   <footer>
     <div class="container">

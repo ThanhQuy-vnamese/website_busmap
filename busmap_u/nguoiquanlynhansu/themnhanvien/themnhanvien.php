@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,7 +77,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php">Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -90,14 +107,32 @@
       </nav>
       <div class="main-home container pt-3 pb-3">
         <h4 class="text-center">THÊM NHÂN VIÊN MỚI</h4>
-        <div class="row mt-3">
+        <form action="" method="post">
+                
+        <div class="form-group row mt-3">
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
             <label for="ten" class="col-sm-12 col-md-3 col-lg-3">Tên nhân viên <span style="color: red;"><i>(*)</i></span></label>
             <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="text" name="ten" id="ten" class="form-control">
+            <input type="text" name="fullname" id="fullname" class="form-control">
             </div>
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
         </div>
+        <div class="form-group row">
+        <div class="col-sm-0 col-md-1 col-lg-1"></div>
+					<label class="col-sm-12 col-md-3 col-lg-3">Tên đăng nhập<span style="color: red;"><i>(*)</i></span></label>
+          <div class="col-sm-12 col-md-7 col-lg-7">
+                            <input type="text" name="username" id="username" class="form-control">
+						</div>
+            <div class="col-sm-0 col-md-1 col-lg-1"></div>
+        </div>	
+        <div class="form-group row">
+        <div class="col-sm-0 col-md-1 col-lg-1"></div>
+					<label class="col-sm-12 col-md-3 col-lg-3">Password</label>
+          <div class="col-sm-12 col-md-7 col-lg-7">
+                            <input type="password" name="password" id="password" class="form-control">
+                            </div>
+            <div class="col-sm-0 col-md-1 col-lg-1"></div>
+        </div>	
         <div class="row mt-3">
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
             <label for="email" class="col-sm-12 col-md-3 col-lg-3">Email <span style="color: red;"><i>(*)</i></span></label>
@@ -110,7 +145,7 @@
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
             <label for="sdt" class="col-sm-12 col-md-3 col-lg-3">Số điện thoại <span style="color: red;"><i>(*)</i></span></label>
             <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="text" name="sdt" id="sdt" class="form-control" onfocusout="validateForm_sdt()">
+                <input type="text" name="phone" id="phone" class="form-control" onfocusout="validateForm_sdt()">
             </div>
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
         </div>
@@ -118,41 +153,53 @@
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
             <label for="diachi" class="col-sm-12 col-md-3 col-lg-3">Địa chỉ <span style="color: red;"><i>(*)</i></span></label>
             <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="text" name="diachi" id="diachi" class="form-control">
+            <input type="text" class="form-control" name="address" id="address">
+
             </div>
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
         </div>
-        <div class="row mt-3">
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-            <label for="ngaysinh" class="col-sm-12 col-md-3 col-lg-3">Ngày sinh <span style="color: red;"><i>(*)</i></span></label>
-            <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="date" name="ngaysinh" id="ngaysinh" class="form-control">
-            </div>
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-        </div>
+        
         <div class="row mt-3">
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
             <label for="chucvu" class="col-sm-12 col-md-3 col-lg-3">Chức vụ <span style="color: red;"><i>(*)</i></span></label>
             <div class="col-sm-12 col-md-7 col-lg-7">
-                <select name="chucvu" id="chucvu" class="form-control">
-                    <option value="nhanviencuacongty">Nhân viên của công ty</option>
-                    <option value="nhanvienbanve">Nhân viên bán vé</option>
-                    <option value="nhanvientaixe">Nhân viên tài xế</option>
-                </select>
+            <select name="permission" id="permission" class="form-control" style="height: 30px;">
+            <option value="" selected >Chọn chức vụ</option>
+                                <option value="2" >Tài xế</option>
+                                <option value="3" >Nhân viên bán vé</option>
+								<option value="7" >Quản Lý nhà xe</option>
+                                <option value="4" >Quản Lý nhân sự</option>
+                              </select>
             </div>
             <div class="col-sm-0 col-md-1 col-lg-1"></div>
         </div>
-        <div class="row mt-3">
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-            <label for="anhnv" class="col-sm-12 col-md-3 col-lg-3">Ảnh nhân viên</label>
-            <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="file" name="anhnv" id="anhnv" class="form-control">
-            </div>
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-        </div>
+        
         <div class=" d-flex justify-content-center mt-3">
-            <button type="submit" class="btn btn-success" onclick="themnhanvien()">Thêm nhân viên</button>
+            <button type="submit" class="btn btn-success" name="btn-add" onclick="themnhanvien()">Thêm nhân viên</button>
         </div>
+        <?php
+                    if (isset($_REQUEST['btn-add'])) {
+                        
+                        $address = $_REQUEST['address'];
+                        $permission = $_REQUEST['permission'];
+                        $phone = $_REQUEST['phone'];
+						$email = $_REQUEST['email'];
+						$user=$_REQUEST['username'];
+						$fullname=$_REQUEST['fullname'];
+						$pass=$_REQUEST['password'];
+						if($user!='' && $pass!='' && $fullname !== '' && $address !== '' && $permission !== '' && $email !== '' && $fullname !== '')
+											{
+												$p->addnewUser($user,$pass,$email, $fullname, $permission, $phone, $address);
+
+											}
+											else
+											{
+												echo"<script>alert('Vui lòng nhập đầy đủ thông tin!');</script>";
+											}
+                            
+                    }
+					?>
+        </form>
       </div>
     </div>
   </body>
@@ -191,24 +238,5 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>
 

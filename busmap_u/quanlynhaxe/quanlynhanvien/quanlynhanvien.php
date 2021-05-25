@@ -1,7 +1,19 @@
 <?php
 include("../source/csdl_thanhvien.php");
 $p=new csdl();
+
 $p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +76,7 @@ $p->connect_database();
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -103,8 +115,7 @@ $p->connect_database();
           
         
       </nav>
-
-        <div class="main-home container pt-3 pb-3">
+      <div class="main-home container pt-3 pb-3">
         <h4 class="text-center">DANH SÁCH NHÂN VIÊN</h4>
 		  <form method="post" name="form1" target="_top" id="form1">
         <div class="row">
@@ -114,11 +125,11 @@ $p->connect_database();
                     <div class="col-sm-12 col-md-8 col-lg-8">
 
 						
-				  <select name="select" id="select" style="line-height: 90px;" onchange="location = this.value;">
-					<option value="index.php">Chọn nhân viên</option>
-				  <option value="quanlynhanvien.php?id=1">Nhân viên bán vé</option>
-				  <option value="quanlynhanvien.php?id=2">Nhân viên lái xe</option>
-				  <option value="quanlynhanvien.php?id=3">Nhân viên kế toán</option>
+				  <select name="select" id="select" style="line-height: 90px;" class="custom-select" onchange="location = this.value;">
+					<option value="quanlynhanvien.php" selected>Chọn nhân viên thuộc bộ phận:</option>
+				  <option value="quanlynhanvien.php?id=2">Nhân viên bán vé</option>
+				  <option value="quanlynhanvien.php?id=3">Nhân viên lái xe</option>
+				  <option value="quanlynhanvien.php?id=4">Quản lý nhân sự</option>
 				</select>
                     </div>
                 </div>
@@ -154,11 +165,12 @@ $p->connect_database();
 			if(isset($_REQUEST['id']))
 			{
         $ct=$_REQUEST['id'];
-			$p->xuatnv("select*from users , user_details Where users.id=user_details.id_user and permission ='$ct'");
+			$p->xuatnv("select*from users left join user_details on users.id=user_details.id_user  where permission ='$ct'");
 			}
 			else
 			{
-			$p->xuatnv("select*from users , user_details Where users.id=user_details.id_user");	
+			$p->xuatnv("select*from users left join user_details on users.id=user_details.id_user  where permission like 2 or permission like 3 
+      or permission like 4");	
 			}
 			?>
             <tr>
@@ -206,26 +218,6 @@ $p->connect_database();
       </div>
     </div>
   </footer>
-
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 
   
 </html>

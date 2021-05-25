@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+$id = $_REQUEST['id'] ?? '';
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,7 +77,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -89,65 +106,118 @@
         </div>
       </nav>
       <div class="main-home container pt-3 pb-3">
-        <h4 class="text-center">THÊM NHÂN VIÊN MỚI</h4>
-        <div class="row mt-3">
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-            <label for="ten" class="col-sm-12 col-md-3 col-lg-3">Tên nhân viên</label>
-            <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="text" name="ten" id="ten" class="form-control">
-            </div>
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
+      <h4 class="text-center">SỬA THÔNG TIN NHÂN VIÊN </h4>
+      <form action="" method="post">
+        <?php
+        $userDetail = $p->getDetailUser($id);
+        ?>
+        <div class="form-group row">
+          <label class="col-form-label col-md-1">Họ tên</label>
+          <div class="col-md-5">
+            <input type="text" name="full_name" id="full_name" value="<?= $userDetail['full_name'] ?>"class="form-control">
+          </div>
+          <label class="col-form-label col-md-1">Email</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" name="email" value="<?= $userDetail['email'] ?>">
+          </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-            <label for="email" class="col-sm-12 col-md-3 col-lg-3">Email</label>
-            <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="text" name="email" id="email" class="form-control">
-            </div>
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
+        <div class="form-group row">
+          <label class="col-form-label col-md-1">Ngày tạo</label>
+          <div class="col-md-5">
+            <input type="text" value="<?= $userDetail['created_at'] ?>" disabled class="form-control">
+          </div>
+          <label class="col-form-label col-md-1">Địa chỉ</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" name="address" value="<?= $userDetail['address'] ?>">
+          </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-            <label for="sdt" class="col-sm-12 col-md-3 col-lg-3">Số điện thoại</label>
-            <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="text" name="sdt" id="sdt" class="form-control">
-            </div>
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
+        <div class="form-group row">
+          <label class="col-form-label col-md-1">Phân Quyền</label>
+          <div class="col-md-5">
+            <select name="permission" id="permission" class="form-control" style="height: 30px;">
+              <option value="1" disabled <?php if ($userDetail['permission'] == '1') {
+                                            echo 'disabled';
+                                          } ?>>Admin</option>
+              <option value="7" disabled <?php if ($userDetail['permission'] == '7') {
+                                            echo 'selected';
+                                          } ?>>Quản lý nhà xe</option>
+              <option value="2" <?php if ($userDetail['permission'] == '2') {
+                                  echo 'selected';
+                                } ?>>Tài xế</option>
+              <option value="3" <?php if ($userDetail['permission'] == '3') {
+                                  echo 'selected';
+                                } ?>>Nhân viên bán vé</option>
+              <option value="4" <?php if ($userDetail['permission'] == '4') {
+                                  echo 'selected';
+                                } ?>>Quản Lý nhân sự</option>
+              <option value="5" <?php if ($userDetail['permission'] == '5') {
+                                  echo 'selected';
+                                } ?>>Khách hàng</option>
+              <option value="6" <?php if ($userDetail['permission'] == '6') {
+                                  echo 'selected';
+                                } ?>>Học Sinh, Sinh Viên</option>
+
+            </select>
+          </div>
+          <label class="col-form-label col-md-1">Số điện thoại</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" name="phone" value="<?= $userDetail['phone'] ?>">
+          </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-            <label for="diachi" class="col-sm-12 col-md-3 col-lg-3">Địa chỉ</label>
-            <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="text" name="diachi" id="diachi" class="form-control">
-            </div>
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
+
+
+        <div class="form-group row">
+          <label class="col-form-label col-md-1">Cập nhật</label>
+          <button type="submit" class="btn btn-success mb-5" name="btn-update" onclick="luuthongtin()">Lưu thông tin</button>
+
+          <label class="col-form-label col-md-1">Xóa</label>
+          <button type="submit" class="btn btn-danger mb-5" name="btn-delete">Xóa</button>
         </div>
-        <div class="row mt-3">
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-            <label for="ngaysinh" class="col-sm-12 col-md-3 col-lg-3">Ngày sinh</label>
-            <div class="col-sm-12 col-md-7 col-lg-7">
-                <input type="date" name="ngaysinh" id="ngaysinh" class="form-control">
-            </div>
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
+        <div class="form-group row">
+          <a href="../quanlynhanvien/quanlynhanvien.php" class="btn btn-success mt-10 d-block text-center">+ Danh sách nhân viên</a>
         </div>
-        <div class="row mt-3">
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-            <label for="chucvu" class="col-sm-12 col-md-3 col-lg-3">Chức vụ</label>
-            <div class="col-sm-12 col-md-7 col-lg-7">
-                <select name="chucvu" id="chucvu" class="form-control">
-                    <option value="nhanviencuacongty">Nhân viên của công ty</option>
-                    <option value="nhanvienbanve">Nhân viên bán vé</option>
-                    <option value="nhanvientaixe">Nhân viên tài xế</option>
-                </select>
-            </div>
-            <div class="col-sm-0 col-md-1 col-lg-1"></div>
-        </div>
-        <div class=" d-flex justify-content-center mt-3">
-            <button type="submit" class="btn btn-success" onclick="luuthongtin()">Lưu thông tin</button>
-        </div>
-      </div>
+        <?php
+        if (isset($_REQUEST['btn-update'])) {
+          $data = [];
+          $data['address'] = $_REQUEST['address'];
+          $data['permission'] = $_REQUEST['permission'];
+          $data['phone'] = $_REQUEST['phone'];
+          $data['full_name']=$_REQUEST['full_name'];
+          $data['password']=$_SESSION['password'];
+          $data['email'] = $_REQUEST['email'];
+          if ($p->updateUser($data, $id)) {
+            echo '<script language="javascript">
+                            alert("Cập nhật thành công");
+                                window.location="../thongtinnhanvien/thongtinnhanvien.php?id=' . $id . '";
+                            </script>';
+          } else {
+            echo '<div class="alert alert-danger">
+                                    Thất bại
+                                </div>';
+          }
+        }
+        ?>
+        <?php
+        if (isset($_REQUEST['btn-delete'])) {
+          $data = [];
+          $data['permission'] = $_SESSION['permission'];
+          if ($p->deleteUser($data, $id)) {
+            echo '<script language="javascript">
+                            alert("xóa thành công");
+                                window.location="../quanlynhanvien/quanlynhanvien.php";
+                            </script>';
+          } else {
+            echo '<div class="alert alert-danger">
+                                    không thể xóa vì người dùng này là nhân viên
+                                </div>';
+          }
+        }
+        ?>
+      </form>
+
     </div>
-  </body>
+  </div>
+</body>
   <footer>
     <div class="container">
       <div class="row">
@@ -183,25 +253,6 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
   
 </html>
 

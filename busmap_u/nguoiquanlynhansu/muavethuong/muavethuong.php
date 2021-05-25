@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,7 +77,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -88,154 +105,127 @@
           <div class="col-sm-12 col-md-2 col-lg-2"></div>
         </div>
       </nav>
-      <div class="main-home container">
+      <div class="main-home container pt-3">
         <div class="row">
           <div class="col-sm-12 col-md-5 col-lg-5 list-bus pt-3">
             <div class="list-bus-infor">
               <div class="search-tuyen pb-3">
-                <form action="" class="form">
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    placeholder="Tìm tuyến xe"
-                    class="form-control"
-                  />
+              <form action="" class="form">
+                 <input type="search" name="search" id="search" placeholder="Tìm tuyến xe" class="col-form-label"/>
+					
+				<input class="btn btn-danger" type="submit" name="sub" id="sub" value="Search">
+					<?php
+					if(isset($_REQUEST['sub']))
+					{
+						$sdb=$_REQUEST['search'];
+						$p->search($sdb);
+					}
+					
+					?>
                 </form>
               </div>
               <h5>CÁC TUYẾN XE</h5>
-              <div class="tuyenxe row pt-2 pb-2 mb-2">
-                <div class="col-sm-2 col-md-2 col-lg-2">
-                  <img src="../../icon/busicon.png" alt="" class="icon-bus" />
-                </div>
-                <div class="col-sm-10 col-md-10 col-lg-10 text-left">
-                  <b>Tuyến xe số 146</b>
-                  <p>BX Miền Đông - BX Hiệp Thành</p>
-                  <div class="row">
-                    <div class="col-sm-2 col-md-2 col-lg-2">
-                      <img
-                        src="../../icon//watch'.png"
-                        alt=""
-                        class="icon-watch"
-                      />
-                    </div>
-                    <div class="col-sm-10 col-md-10 col-lg-10 time text-left">
-                      5:00 - 19:00
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tuyenxe row pt-2 pb-2 mb-2">
-                <div class="col-sm-2 col-md-2 col-lg-2">
-                  <img src="../../icon/busicon.png" alt="" class="icon-bus" />
-                </div>
-                <div class="col-sm-10 col-md-10 col-lg-10 text-left">
-                  <b>Tuyến xe số 146</b>
-                  <p>BX Miền Đông - BX Hiệp Thành</p>
-                  <div class="row">
-                    <div class="col-sm-2 col-md-2 col-lg-2">
-                      <img
-                        src="../../icon//watch'.png"
-                        alt=""
-                        class="icon-watch"
-                      />
-                    </div>
-                    <div class="col-sm-10 col-md-10 col-lg-10 time text-left">
-                      5:00 - 19:00
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tuyenxe row pt-2 pb-2 mb-2">
-                <div class="col-sm-2 col-md-2 col-lg-2">
-                  <img src="../../icon/busicon.png" alt="" class="icon-bus" />
-                </div>
-                <div class="col-sm-10 col-md-10 col-lg-10 text-left">
-                  <b>Tuyến xe số 146</b>
-                  <p>BX Miền Đông - BX Hiệp Thành</p>
-                  <div class="row">
-                    <div class="col-sm-2 col-md-2 col-lg-2">
-                      <img
-                        src="../../icon//watch'.png"
-                        alt=""
-                        class="icon-watch"
-                      />
-                    </div>
-                    <div class="col-sm-10 col-md-10 col-lg-10 time text-left">
-                      5:00 - 19:00
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <span>Click để theo dõi tuyến xe</span>
+              <?php
+				$p->xuattuyenxe("select*from ( buses_status 
+												INNER JOIN buses ON buses_status.id_bus = buses.id
+												INNER JOIN buses_numbers ON buses.id_buses_numbers = buses_numbers.id )");
+				
+				?>
+
             </div>
           </div>
           <div class="col-sm-12 col-md-7 col-lg-7 d-flex justify-content-center">
             <div class="border-form">
               <h4 class="text-center">MUA VÉ XE BUS</h4>
               <p class="text-center">Mã số vé: 0412344565465</p>
-              <form action="" class="form">
+       <form method="post" enctype="multipart/form-data" name="form1" id="form1">
                 <div class="row mt-2">
                   <label for="" class="col-sm-12 col-md-3 col-lg-3"
-                    >Chọn đối tượng:<span style="color: red"><i>(*)</i></span>
+                    >Chọn đối tượng:
                   </label>
                   <div class="col-sm-12 col-md-9 col-lg-9">
                     <div class="row">
-                      <div class="col-sm-6 col-md-6 col-lg-6">
+						 <div class="col-sm-0 col-md-1 col-lg-1"></div>
+            
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <select name="doituong" id="doituong" class="form-control" style="height: 30px;">
+                    <option value="3000">Học sinh ,Sinh viên</option>
+                    <option value="7000">Người Thường</option>
+                   
+					
+                </select>
+            </div>
+            <div class="col-sm-0 col-md-1 col-lg-1"></div>
 
-                        <div class="row" style="display: flex; align-items: center;">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
-                          <input
-                            type="radio"
-                            name="loai"
-                            id="nguoithuong"
-                            class="form-control"
-                            value="nguoithuong"
-                          /></div>
-                          <label class="col-sm-9 col-md-9 col-lg-9" for="nguoithuong">Người thường</label>
-                        </div>
-                      
-                      </div>
-                      <div class="col-sm-6 col-md-6 col-lg-6">
-                        <div class="row" style="display: flex; align-items: center;">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
-                          <input
-                            type="radio"
-                            name="loai"
-                            id="hssv"
-                            class="form-control"
-                            value="hssv"
-                          /></div>
-                          <label class="col-sm-9 col-md-9 col-lg-9" for="hssv">Học sinh, sinh viên</label>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
                 
                 <div class="row mt-2">
-                  <label for="soluong" class="col-sm-12 col-md-3 col-lg-3"
-                    >Số lượng vé<span style="color: red"><i>(*)</i></span
-                    >:
+                  <label for="" class="col-sm-12 col-md-3 col-lg-3"
+                    >Số lượng vé :
                   </label>
                   <div class="col-sm-12 col-md-9 col-lg-9">
-                    <input type="text" name="soluong" id="soluong" class="form-control" onfocusout="validateForm_soluong()"/>
+                    <input type="text" name="sove1" id="sove1" class="form-control" />
                   </div>
                 </div>
                 <div class="row mt-2">
                   <label for="" class="col-sm-12 col-md-3 col-lg-3"
                     >Thẻ sinh viên:<span style="color: red"><i>(nếu mua vé HSSV)(*)</i></span>
                   </label>
-                  <div class="col-sm-12 col-md-9 col-lg-9">
-                    <input type="file" name="" id="" class="form-control" />
+                  
+				<div class="col-sm-12 col-md-9 col-lg-9">
+                    <input type="file" name="txtfile" id="txtfile" class="form-control" />
                   </div>
+					
                 </div>
-                
+
+			 <div class="row mt-2">
+                  <label for="tongtien" class="col-sm-12 col-md-3 col-lg-3"
+                    >Giá vé :
+                  </label>
+                  <div class="col-sm-12 col-md-9 col-lg-9">
+                    <input type="text" name="tongtien" id="tongtien" class="form-control" readonly/>
+                  </div>
+                </div>	
+		   
                 <div class="d-flex justify-content-center mt-2">
-                  <button type="submit" class="btn btn-success">
-                    <a href="../thanhtoan/thanhtoan.php" style="color: white; text-decoration: none">
+
+					<input type="submit"  name="sub2" id="sub2" value="Mua vé">
+					<a href="../thanhtoan/thanhtoan.html" style="color: white; text-decoration: none">
                     Mua vé</a>
-                  </button>
                 </div>
+				  <?php
+
+		    if(isset($_REQUEST['sub2']))
+							{
+                $id_user=$_SESSION['id'];
+								$doituong=$_REQUEST['doituong'];
+								$sove=$_REQUEST['sove1'];
+								$name=$_FILES['txtfile']['name'];
+								$local=$_FILES['txtfile']['tmp_name'];
+								
+								$t=time();
+
+								$timenow=date("Y-m-d",$t);
+						
+								if($p->uploadfile($local,"../upload",$name)==1)
+								{
+									$p->themvexethuong($id_user, $doituong, $sove, $name, $timenow);
+                }
+                else{
+                  echo'thẻ hssv không hợp lệ';
+                }
+                  
+							}
+					  
+				  
+
+
+				  ?>
+				  
+				  
               </form>
             </div>
           </div>
@@ -278,33 +268,19 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-  <div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-body text-center">
-          <p class="modal-title">Đăng xuất!</p>
-          <br />
-          <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            <a
-              href="./dangkyvethang.php"
-              style="text-decoration: none; color: black"
-              >
-            Hủy</a>
-          </button>
-          <button type="button" class="btn btn-default">
-            <a
-              href="../../khachvanglai/Home/Home.php"
-              style="text-decoration: none; color: black"
-              >Xác nhận</a
-            >
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script>
+      $(document).ready(() => {
+        $input_sove = $('input[name="sove1"]');
+        $input_sove.keyup(() => {
+          sove = $input_sove.val();
+          if(sove.length == 0) {
+            document.getElementById("tongtien").value = 0;
+          } else {
+            var doituong = parseInt(document.getElementById("doituong").value);
+          document.getElementById("tongtien").value = parseInt(sove) * parseInt(doituong);
+          }
+          
+        })
+      })
+    </script>
 </html>

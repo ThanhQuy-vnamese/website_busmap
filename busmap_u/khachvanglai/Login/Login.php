@@ -1,3 +1,8 @@
+<?php
+require_once ("../source/csdl_thanhvien.php");
+	$p = new csdl();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -90,12 +95,12 @@
       <div class="main pt-3 pb-3">
         <div class="container d-flex justify-content-center">
             <div class="border-form">
-                <h4 class="text-center">ĐĂNG NHẬP</h4>
+            <h4 class="text-center">ĐĂNG NHẬP</h4>
                 <form action="" class="form" name="loginform">
                     <div class="row mt-2">
-                        <label for="usename" class="col-sm-12 col-md-4 col-lg-4">Tên đăng nhập:<span style="color: red;"><i>(*)</i></span> </label>
+                        <label for="username" class="col-sm-12 col-md-4 col-lg-4">Tên đăng nhập:<span style="color: red;"><i>(*)</i></span> </label>
                         <div class="col-sm-12 col-md-8 col-lg-8">
-                            <input type="text" name="usename" id="usename" class="form-control">
+                            <input type="text" name="username" id="username" class="form-control">
                         </div>
                     </div>
                      
@@ -108,27 +113,55 @@
                   </div>
                   
                   <div class="d-flex justify-content-center mt-2">
-                      <button type="submit" class="btn btn-success">Đăng nhập</button>
+                      <button type="submit" name="sub" id="sub" value="Đăng Nhập" class="btn btn-success">Đăng nhập</button>
                   </div>
+				<?php
+					if(isset(
+						$_REQUEST['sub'] ))
+					{
+						$username =$_REQUEST['username'];
+						$password=$_REQUEST['password'];
+						if($username !='' && $password !='')
+						{
+							$p-> mylogin($username,$password);
+						}
+						else
+						{
+							echo'Vui long nhap day du';
+						}
+					}
+				?>
                 </form>
             </div>
             
         </div>
         <div class="row d-flex justify-content-center mt-2">
-            <p class=""><a href="../../../bus_admin/main/pages/auth_login.php">ADMIN?</a></p>
+            
+            <p class=""><a href="../../../bus_admin/main/pages/auth_login.php">Admin?</a></p>
         </div>
         <div class="row d-flex justify-content-center mt-2">
+
             <p class=""><a href="../registration/registration.php">Đăng ký ngay</a> nếu chưa có tài khoản?</p>
         </div>
-
-        <div class="container d-flex justify-content-center mt-3">
+		  
+		  
+		  
+		<div class="container d-flex justify-content-center mt-3">
           <div class="border-form">
               <h4 class="text-center">ĐĂNG KÝ NHANH</h4>
-              <form action="" class="form" name="registerform">
+              <form action=""  class="form" name="registerform">
                   <div class="row mt-2">
-                      <label for="username" class="col-sm-12 col-md-4 col-lg-4">Tên người dùng:<span style="color: red;"><i>(*)</i></span> </label>
+                      <label for="username" class="col-sm-12 col-md-4 col-lg-4">Tên đăng nhập: <span style="color: red;"><i>(*)</i></span> 
+						 
+					  </label>
                       <div class="col-sm-12 col-md-8 col-lg-8">
                           <input type="text" name="username" id="username" class="form-control">
+                      </div>
+                  </div>
+				  <div class="row mt-2">
+                      <label for="full_name" class="col-sm-12 col-md-4 col-lg-4">Họ và tên:<span style="color: red;"><i>(*)</i></span> </label>
+                      <div class="col-sm-12 col-md-8 col-lg-8">
+                          <input type="text" name="full_name" id="full_name" class="form-control">
                       </div>
                   </div>
                   <div class="row mt-2">
@@ -161,9 +194,39 @@
                         <input type="password" name="repassword" id="repassword" class="form-control" onfocusout="validateForm_repassword()">
                     </div>
                 </div>
-                <div class="d-flex justify-content-center mt-2">
-                    <button type="submit" class="btn btn-success" onclick="dangky()">Đăng ký ngay</button>
+				 
+				 <div class="row mt-2">
+                    <label for="repassword" class="col-sm-12 col-md-4 col-lg-4">Chọn đối tượng:<span style="color: red;"><i>(*)</i></span> </label>
+                    <div  class="col-sm-12 col-md-8 col-lg-8">
+                        <input type="checkbox" name="cat" id="cat_5" value="5" >
+						<label for="cat_5">Người thường</label> &emsp;
+						<input type="checkbox" name="cat" id="cat_6" value="6" >
+						<label for="cat_6">Học sinh, sinh viên</label>
+                    </div>
                 </div>
+				
+                <div class="d-flex justify-content-center mt-2">
+                    <button type="submit" name="btn-insert-user" class="btn btn-success" onclick="dangky()">Đăng ký ngay</button>
+                </div>
+				<?php
+				if (isset($_REQUEST['btn-insert-user'])) {
+					$username = $_REQUEST['username'];
+					$full_name = $_REQUEST['full_name'];
+					$password = $_REQUEST['password'];
+					$repassword = $_REQUEST['repassword'];
+					$permission=$_REQUEST['cat'];
+          $phone=$_REQUEST['phone'];
+          $email=$_REQUEST['email'];
+          $address=$_REQUEST['address'];
+					if($password != $repassword){
+						echo 'Xác nhận mật khẩu chưa chính xác!';
+					} elseif($permission && $username != '' && $full_name != '' && $password != '' 
+          && $phone != '' && $address != '' && $password != ''  ){
+
+					$p->addnewUser($username,$password,$email, $full_name, $permission, $phone, $address);
+          }
+        }
+				?>
               </form>
           </div>
       </div>

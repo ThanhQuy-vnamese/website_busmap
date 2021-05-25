@@ -1,9 +1,24 @@
 <?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
 include("../source/csdl_doanhthu.php");
 $d=new doanhthu();
 include("../source/csdl_luong.php");
-$p=new Salary();
+$e=new Salary();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +62,7 @@ $p=new Salary();
                 <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.html">Thông tin cá nhân</a>
                 <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.html">Thông báo</a>
                 <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.html">Báo cáo sự cố</a>
-                <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                <a class="dropdown-item" href="../../logout.php">Đăng xuất</a>
               </div>
             </div>
           </div>
@@ -175,25 +190,6 @@ $p=new Salary();
     </div>
   </footer>
 
-  <!-- Modal -->
-  <div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-
-        <div class="modal-body text-center">
-          <p class="modal-title">Đăng xuất!</p><br>
-          <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.html" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-
-    </div>
-  </div>
 </body>
 
 </html>

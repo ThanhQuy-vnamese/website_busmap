@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +76,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php">Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -88,71 +105,18 @@
         </div>
       </nav>
       <div class="main-home container pt-4 pb-4">
-        <h4 class="text-center">THÔNG TIN ĐƠN HÀNG</h4>
-        <div class="d-flex justify-content-center">
-          <div class="infordonhang">
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                Tên người gửi: Nguyễn Văn A
-              </div>
-              <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                Số điện thoại: 012345678
-              </div>
-            </div>
-            <br />
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                Tên người nhận: Nguyễn Văn B
-              </div>
-              <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                Số điện thoại: 012345678
-              </div>
-            </div>
-            <br />
-            <p>Tuyên đường: Tuyến số 146</p>
-            <p>Trạm nhận hàng: Trạm trường ĐH Công nghiệp TP.HCM</p>
-            <p>Khối lượng: 4kg</p>
-            <p>Mô tả: Hàng dễ vỡ vui lòng nhẹ tay</p>
-            <p class="text-right">Ngày gửi: 04/09/2021</p>
-          </div>
-        </div>
-        <h4 class="text-center">ĐƠN HÀNG CỦA BẠN</h4>
-        <div class="d-flex justify-content-center">
-            <div class="infordonhangcuaban">
-              <p class="text-center">Mã đơn: 123456789</p>
-              <br>
-              <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  Phí vận chuyển:
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                  15.000 VNĐ
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  Phí thu hộ:
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                  0 VNĐ
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <b>Tổng:</b>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                  <b>15.000 VNĐ</b>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class=" d-flex justify-content-center mt-4">
-              <buton class="btn btn-success" name="xacnhandonhang">Xác nhận đơn hàng</buton>
-          </div>
-      </div>
-    </div>
+
+      
+<h4 class="text-center">THÔNG TIN ĐƠN HÀNG</h4>
+<div style="text-align:left; text-decoration:black; font-weight: 800; font-size: 15px">
+<?php
+    $p->showdonhang();
+?>
+</div>
+
+
+</div>
+</div>
   </body>
   <footer>
     <div class="container">
@@ -189,23 +153,4 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>

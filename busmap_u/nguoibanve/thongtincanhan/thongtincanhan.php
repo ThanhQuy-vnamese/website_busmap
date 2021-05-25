@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +76,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -80,18 +97,22 @@
           </ul>
         </div>
 </nav>
-      <div class="main-home container d-flex justify-content-center pt-4 pb-4">
+<div class="main-home container d-flex justify-content-center pt-4 pb-4">
         <div class="infor">
             <div class="row">
                 <div class="col-sm-12 col-md-3 col-lg-3">
                     <img src="../../icon//icon-per-removebg-preview.png" alt="">
                 </div>
+                <?php
+            $id=$_SESSION['id'];
+            $userDetail=$p->getDetailUser($id);
+            ?>
                 <div class="col-sm-12 col-md-9 col-lg-9 pl-4">
                     <h5>Thông tin nhân viên</h5>
-                    <p>Tên nhân viên:</p>
-                    <p>Email:</p>
-                    <p>Số điện thoại:</p>
-                    <p>Địa chỉ:</p>
+                    <p>Tên nhân viên: <?=$userDetail['full_name']?></p>
+                    <p>Email: <?=$userDetail['email']?></p>
+                    <p>Số điện thoại: <?=$userDetail['phone']?></p>
+                    <p>Địa chỉ: <?=$userDetail['address']?></p>
                     <div class="text-right">
                     <a href="../capnhatthongtin/capnhatthongtin.php">Cập nhật thông tin</a>
                 </div>
@@ -136,24 +157,5 @@
     </div>
   </footer>
 
-  <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal"><a href="./thongtincanhan.php" style="text-decoration: none; color: black;">Hủy</a></button>
-          <button type="button" class="btn btn-default"><a href="../Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>
 

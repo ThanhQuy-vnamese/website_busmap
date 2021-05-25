@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,7 +77,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php" >Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -101,7 +118,7 @@
       </nav>
       <div class="main-home container pt-4 pb-4">
         <div class="main">
-            <form action="" class="form form-guithemhang">
+            <form action="" method="post" enctype="multipart/form-data" class="form form-guithemhang">
                 <h4 class="text-center">
                     GỬI HÀNG
                 </h4>
@@ -142,9 +159,9 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <label for="txttuyenduong" class="col-sm-12 col-md-12 col-lg-2">Tuyến đường:<span style="color: red;"><i>(*)</i></span></label>
+                    <label for="txttramgui" class="col-sm-12 col-md-12 col-lg-2">Trạm gửi hàng:<span style="color: red;"><i>(*)</i></span></label>
                     <div class="col-sm-12 col-md-12 col-lg-10">
-                        <input type="text" name="txttuyenduong" id="txttuyenduong" class="form-control">
+                        <input type="text" name="txttramgui" id="txttramgui" class="form-control">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -154,9 +171,9 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <label for="txtkhoiluong" class="col-sm-12 col-md-12 col-lg-2">Khối lượng:<span style="color: red;"><i>(*)</i></span></label>
+                    <label for="txtkhoiluong" class="col-sm-12 col-md-12 col-lg-2">Khối lượng(kg):<span style="color: red;"><i>(*)</i></span></label>
                     <div class="col-sm-12 col-md-12 col-lg-10">
-                        <input type="text" name="txtkhoiluong" id="txtkhoiluong" class="form-control">
+                        <input type="text" name="txtkhoiluong" id="txtkhoiluong" class="form-control" placeholder="0.5">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -166,8 +183,22 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-3">
-                    <button type="button" class="btn btn-success btn-guithemhang" onclick="guithemhang()">Gửi hàng</button>
+                <input type="submit" class="btn btn-success" name="nut" id="nut" value="Gửi hàng">
                 </div>
+
+                <?php
+                        if (isset($_REQUEST['nut'])) {
+                           $tennguoigui = $_REQUEST['txttennguoigui']; //note
+                           $tennguoinhan = $_REQUEST['txttennguoinhan'];
+                           $sdtgui = $_REQUEST['txtsdtguihang'];
+                           $sdtnhan = $_REQUEST['txtsdtnhanhang'];
+                           $tramgui=$_REQUEST['txttramgui'];
+                           $tramnhan=$_REQUEST['txttramnhan'];
+                           $khoiluong=$_REQUEST['txtkhoiluong'];
+                           $mota=$_REQUEST['txtmota'];
+                  $p->insert_goods($tennguoigui,$tennguoinhan,$sdtgui, $sdtnhan, $tramgui,$tramnhan,$khoiluong, $mota);
+                   }
+                ?>
             </form>
         </div>
         
@@ -209,25 +240,4 @@
     </div>
   </footer>
 
-  
- 
-   <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
 </html>

@@ -1,3 +1,8 @@
+
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -97,7 +102,7 @@
       </nav>
       <div class="main-home container pt-4 pb-4">
         <div class="main">
-            <form action="" class="form form-guithemhang">
+            <form action="" method="post" enctype="multipart/form-data" class="form form-guithemhang">
                 <h4 class="text-center">
                     GỬI HÀNG
                 </h4>
@@ -114,7 +119,7 @@
                         <div class="row">
                             <label for="txtsdtguihang" class="col-sm-12 col-md-12 col-lg-4">Số điện thoại người gửi:<span style="color: red;"><i>(*)</i></span></label>
                             <div class="col-sm-12 col-md-12 col-lg-8">
-                                <input type="text" name="txtsdtguihang" id="txtsdtguihang" class="form-control" onfocusout="validateForm_phonenguoigui()">
+                                <input type="text" name="txtsdtguihang" id="txtsdtguihang" class="form-control"  onfocusout="validateForm_txtsdtguihang()">
                             </div>
                         </div>
                     </div>
@@ -132,7 +137,7 @@
                         <div class="row">
                             <label for="txtsdtnhanhang" class="col-sm-12 col-md-12 col-lg-4">Số điện thoại người nhận:<span style="color: red;"><i>(*)</i></span></label>
                             <div class="col-sm-12 col-md-12 col-lg-8">
-                                <input type="text" name="txtsdtnhanhang" id="txtsdtnhanhang" class="form-control" onfocusout="validateForm_phonenguoinhan()">
+                                <input type="text" name="txtsdtnhanhang" id="txtsdtnhanhang" class="form-control" onfocusout="validateForm_txtsdtnhanhang()">
                             </div>
                         </div>
                     </div>
@@ -144,7 +149,7 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <label for="" class="col-sm-12 col-md-12 col-lg-2">Trạm nhận hàng:<span style="color: red;"><i>(*)</i></span></label>
+                    <label for="txttramnhan" class="col-sm-12 col-md-12 col-lg-2">Trạm nhận hàng:<span style="color: red;"><i>(*)</i></span></label>
                     <div class="col-sm-12 col-md-12 col-lg-10">
                         <input type="text" name="txttramnhan" id="txttramnhan" class="form-control">
                     </div>
@@ -162,13 +167,33 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-3">
-                    <button type="button" class="btn btn-success btn-guithemhang" onclick="guihang()">Gửi hàng</button>
+                <input type="submit" class="btn btn-success" name="nut" id="nut" value="Gửi hàng">
                 </div>
+
+                <?php
+                        if (isset($_REQUEST['nut'])) {
+                           $tennguoigui = $_REQUEST['txttennguoigui']; 
+                           $tennguoinhan = $_REQUEST['txttennguoinhan'];
+                           $sdtgui = $_REQUEST['txtsdtguihang'];
+                           $sdtnhan = $_REQUEST['txtsdtnhanhang'];
+                           $tramgui=$_REQUEST['txttramgui'];
+                           $tramnhan=$_REQUEST['txttramnhan'];
+                           $khoiluong=$_REQUEST['txtkhoiluong'];
+                           $mota=$_REQUEST['txtmota'];
+                           if($tennguoinhan!=''){
+                  $p->insert_goods($tennguoigui,$tennguoinhan,$sdtgui, $sdtnhan, $tramgui,$tramnhan,$khoiluong, $mota);
+                   }
+                   else{
+                     echo'vui long nhap du thong tin';
+                   }
+                  }
+                ?>
             </form>
         </div>
         
       </div>
     </div>
+  
     <footer>
     <div class="container">
       <div class="row">

@@ -1,3 +1,20 @@
+<?php
+include("../source/csdl_thanhvien.php");
+$p=new csdl();
+
+$p->connect_database();
+if(empty($_SESSION["username"])||empty($_SESSION["password"]) || empty($_SESSION['permission'])){
+	echo "<script>
+	window.location = '../../khachvanglai/Login/Login.php';
+</script>";
+}
+else{
+	$username=$_SESSION["username"];
+	$password=$_SESSION["password"];
+	$permission = $_SESSION['permission'];
+	$p->confirmlogin($username,$password, $permission);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +76,7 @@
                   <a class="dropdown-item" href="../thongtincanhan/thongtincanhan.php">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="../thongbao-TV/thongbao_TV.php">Thông báo</a>
                   <a class="dropdown-item" href="../baocaosuco-TV/baocaosuco_TV.php">Báo cáo sự cố</a>
-                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#myModal">Đăng xuất</a>
+                  <a class="dropdown-item" href="../../logout.php">Đăng xuất</a>
                 </div>
               </div>
             </div>
@@ -80,43 +97,59 @@
           </ul>
         </div>
 </nav>
-      <div class="main-home container pb-4">
-        <form class="form formbaocao">
+<div class="main-home container pb-4">
+        <form  method="post" enctype="multipart/form-data" class="form formbaocao">
           <fieldset>
             <legend>Báo cáo sự cố về Busmap</legend>
-            <p>
+            <p >
               Nếu bạn gặp sự cố trong Busmap! Vui lòng sử dụng biểu mẫu dưới đây
               để báo cho chúng tôi biết vấn đề bạn gặp phải!
             </p>
             <label for="mota">Mô tả vấn đề bạn đang gặp!</label>
-            <textarea class="form-control" rows="4"></textarea>
+            <textarea name="txtnote" rows="4" class="form-control" id="txtnote"></textarea>
             <div class="row pt-3">
               <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="row">
-                  <label for="" class="col-sm-3 col-md-3 col-lg-3">Ngày:</label>
+               <!--   <label for="txthoten" class="col-sm-3 col-md-3 col-lg-3">Ngày:</label>-->
                   <div class="col-sm-9 col-md-9 col-lg-9">
-                    <input type="date" name="" id="" class="form-control">
+              	<!-- <input type="date" name="txtngay" id="txtngay" class="form-control"> -->
                   </div>
                 </div>
               </div>
               <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="row">
-                  <label for="" class="col-sm-3 col-md-3 col-lg-3">Họ tên:</label>
+               <!--    <label for="txthoten" class="col-sm-3 col-md-3 col-lg-3">Họ tên:</label>-->
                   <div class="col-sm-9 col-md-9 col-lg-9">
-                    <input type="text" name="" id="" class="form-control">
+                <!--    <input type="text" name="txthoten" id="txthoten" class="form-control">-->
                   </div>
                 </div>
               </div>
             </div>
             <p>Ảnh chụp chi tiết (không bắt buộc):</p>
-            <input type="file" name="filebaocao" id="" />
+            <input type="file" name="filebaocao" id="filebaocao" />
             <div class="d-flex justify-content-end">
-              <button type="submit" class="btn btn-success">Gửi sự cố</button>
+				<input type="submit" class="btn btn-success" name="nut" id="nut" value="Báo cáo sự cố">
+				
+             
+				
             </div>
           </fieldset>
+			<?php
+    if (isset($_REQUEST['nut'])) {
+       		$note = $_REQUEST['txtnote']; //note
+           $id_user=$_SESSION['id'];
+            $tmp_name = $_FILES['filebaocao']['tmp_name']; //file tam tren server
+            $file_name = $_FILES['filebaocao']['name']; //ten file
+            $type_file = $_FILES['filebaocao']['type']; //loai file
+			
+            $p->insert_issue($id_user,$note, $tmp_name, $file_name, $type_file);
+		}
+    ?>
+          
         </form>
       </div>
     </div>
+
     <footer>
     <div class="container">
       <div class="row">
@@ -152,24 +185,5 @@
     </div>
   </footer>
   </body>
-  
-   <!-- Modal -->
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body text-center">
-            <p class="modal-title">Đăng xuất!</p><br>
-            <p>Bạn có chắc chắn muốn đăng xuất</p>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-default"><a href="../../khachvanglai/Home/Home.php" style="text-decoration: none; color: black;">Xác nhận</a></button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
+ 
 </html>
