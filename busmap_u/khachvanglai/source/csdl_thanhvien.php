@@ -196,7 +196,7 @@ class csdl
                                                   window.location = "../../thanhvien/Home-TV/Home-TV.php";
                                               </script>';
 									}
-									else
+									elseif($_SESSION['permission']==7)
 									{
 										//header('location:../../quanlynhaxe/Home-nguoiquanlynhaxe/Home-qlnx.php');
                                             echo '  <script>
@@ -215,8 +215,10 @@ class csdl
 		else
 		{
 			// header('location:login.php');
+			echo"<div class="."text-danger".">ten dang nhap hoac mat khau sai! vui long dang nhap lai</div>";   
 			echo '  <script>
-						window.location = "location:../Login.php";                         
+						window.location = "location:../Login.php"; 
+						                     
                      </script>';
 		}
 		
